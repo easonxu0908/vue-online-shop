@@ -1,2 +1,13 @@
-dist/
-node_modules/
+build/
+config/
+image/
+src/
+static/
+.babelrc
+.editorconfig
+.postcssrc.js
+
+package.json
+package-lock.json
+README.md
+node_modules
