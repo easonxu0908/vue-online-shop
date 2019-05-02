@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="dropdown">
+      <CartDropdown/>
+    </div>
     <loading :active.sync="isLoading"></loading>
     <!-- 選購區 -->
     <div class="row mt-4">
@@ -243,6 +246,8 @@
 <script>
 import $ from "jquery";
 import Pagination from "@/components/pages/Pagination.vue";
+import CartDropdown from "@/components/pages/CartDropdown.vue";
+
 export default {
   data() {
     return {
@@ -268,7 +273,8 @@ export default {
     };
   },
   components: {
-    Pagination
+    Pagination,
+    CartDropdown
   },
   methods: {
     getProducts(page = 1) {

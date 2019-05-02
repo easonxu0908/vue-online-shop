@@ -3,11 +3,12 @@ import Router from 'vue-router';
 // import HelloWorld from '@/components/HelloWorld';
 import Dashboard from '@/components/Dashboard';
 import Login from '@/components/pages/Login';
-import Products from '@/components/pages/Products';
+import Home from '@/components/pages/Home';
+import Products from '@/components/pages/admin/Products';
 import CustomerOders from '@/components/pages/CustomerOders';
 import CustomerCheckout from '@/components/pages/CustomerCheckout';
-import Orders from '@/components/pages/Orders';
-import Coupon from '@/components/pages/Coupon';
+import Orders from '@/components/pages/admin/Orders';
+import Coupon from '@/components/pages/admin/Coupon';
 
 Vue.use(Router)
 
@@ -24,15 +25,28 @@ export default new Router({
     //   meta: { requiresAuth: true },
     // },
     {
-      path: '/customer_oders',
-      name: 'CustomerOders,',
-      component: CustomerOders,
+      path: '/',
+      name: 'Home',
+      component: Home,
+      children: [
+        {
+          path: '/',
+          name: 'CustomerOders,',
+          component: CustomerOders,
+        },
+
+      ],
     },
     {
       path: '/',
       name: 'Dashboard',
       component: Dashboard,
       children: [
+        {
+          path: '/',
+          name: 'CustomerOders,',
+          component: CustomerOders,
+        },
         {
           path: 'customer_oders',
           name: 'CustomerOders,',
