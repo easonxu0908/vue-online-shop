@@ -24,6 +24,28 @@ export default new Router({
     //   meta: { requiresAuth: true },
     // },
     {
+      path: '/customer_oders',
+      name: 'CustomerOders,',
+      component: CustomerOders,
+    },
+    {
+      path: '/',
+      name: 'Dashboard',
+      component: Dashboard,
+      children: [
+        {
+          path: 'customer_oders',
+          name: 'CustomerOders,',
+          component: CustomerOders,
+        },
+        {
+          path: 'customer_checkout/:orderId',
+          name: 'CustomerCheckout,',
+          component: CustomerCheckout,
+        }
+      ],
+    },
+    {
       path: '/login',
       name: 'Login,',
       component: Login,
@@ -32,7 +54,6 @@ export default new Router({
       path: '/admin',
       name: 'Dashboard',
       component: Dashboard,
-
       children: [
         {
           path: 'products',
@@ -54,23 +75,7 @@ export default new Router({
         }
       ],
     },
-    {
-      path: '/',
-      name: 'Dashboard',
-      component: Dashboard,
-      children: [
-        {
-          path: 'customer_oders',
-          name: 'CustomerOders,',
-          component: CustomerOders,
-        },
-        {
-          path: 'customer_checkout/:orderId',
-          name: 'CustomerCheckout,',
-          component: CustomerCheckout,
-        }
-      ],
-    }
+
 
   ]
 })
