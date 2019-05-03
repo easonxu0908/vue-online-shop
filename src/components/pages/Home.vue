@@ -25,7 +25,14 @@
             <a class="nav-link" href="#">Features</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
+            <router-link to="/login" class="d-md-inline-block">
+              <a class="nav-link" href="#">管理者登入</a>
+            </router-link>
+          </li>
+          <li class="float-right">
+            <router-link to="/login" class="mr-3 d-md-inline-block">
+              <i class="fas fa-user text-muted fa-2x"></i>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -36,21 +43,28 @@
     <div class="container">
       <router-view></router-view>
     </div>
+    <Footer/>
   </div>
 </template>
 
 <script>
+import Footer from "@/components/Footer";
+
 export default {
   name: "home",
   data() {
     return {};
+  },
+  components: {
+    Footer
   }
 };
+
+let vm = this;
 
 window.onscroll = function() {
   scrollFunction();
 };
-
 function scrollFunction() {
   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
     document.getElementById("gotoTop").style.display = "block";
@@ -59,15 +73,15 @@ function scrollFunction() {
   }
 }
 
-window.addEventListener("resize", resizeFunction);
+// window.addEventListener("resize", resizeFunction);
 
-function resizeFunction() {
-  if (screen.width < 540) {
-    document.getElementById("gotoTop").style.right = 0;
-  } else {
-    document.getElementById("gotoTop").style.right = 30;
-  }
-}
+// function resizeFunction() {
+//   if (screen.width < 540) {
+//     document.getElementById("gotoTop").style.right = 0;
+//   } else {
+//     document.getElementById("gotoTop").style.right = 30;
+//   }
+// }
 </script>
 
 <style scoped>

@@ -54,7 +54,7 @@
     <!-- 選購區 -->
 
     <!-- 購物車 -->
-    <div class="container">
+    <!-- <div class="container">
       <div class="row justify-content-center mt-4">
         <div class="col-md-6">
           <div class="h4 text-center mb-4">
@@ -105,11 +105,11 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
     <!-- 購物車 -->
 
     <!-- 消費者資訊 -->
-    <div class="my-1 row justify-content-center">
+    <!-- <div class="my-1 row justify-content-center">
       <form class="col-md-6" @submit.prevent="createOrder">
         <div class="form-group">
           <label for="useremail">Email</label>
@@ -186,7 +186,7 @@
           <button class="btn btn-danger">送出訂單</button>
         </div>
       </form>
-    </div>
+    </div>-->
     <!-- 消費者收件資訊 -->
 
     <!-- 詳細商品內容 -->
@@ -313,6 +313,7 @@ export default {
       };
       this.$http.post(url, { data: cart }).then(response => {
         console.log(response.data);
+        this.$bus.$emit("DropMenu:getCartList");
         vm.getCart();
         $("#productModal").modal("hide");
       });

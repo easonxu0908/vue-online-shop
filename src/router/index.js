@@ -7,6 +7,10 @@ import Home from '@/components/pages/Home';
 import Products from '@/components/pages/admin/Products';
 import CustomerOders from '@/components/pages/CustomerOders';
 import CustomerCheckout from '@/components/pages/CustomerCheckout';
+import Checkout from '@/components/pages/Checkout';
+import CheckoutInfo from '@/components/pages/CheckoutInfo';
+import CheckoutPay from '@/components/pages/CheckoutPay';
+import CheckoutFinish from '@/components/pages/CheckoutFinish';
 import Orders from '@/components/pages/admin/Orders';
 import Coupon from '@/components/pages/admin/Coupon';
 
@@ -31,8 +35,41 @@ export default new Router({
       children: [
         {
           path: '/',
-          name: 'CustomerOders,',
+          name: 'CustomerOders',
           component: CustomerOders,
+        },
+        {
+          path: '/',
+          name: 'Checkout',
+          component: Checkout,
+          children: [
+            {
+              path: '/checkout',
+              name: 'CheckoutInfo',
+              component: CheckoutInfo,
+            },
+            {
+              path: '/checkout/pay',
+              name: 'CheckoutPay',
+              component: CheckoutPay,
+            },
+            {
+              path: '/finish/:id',
+              name: 'CheckoutFinish',
+              component: CheckoutFinish,
+              beforeEnter: (to, from, next) => {
+                console.log(to, from, next);
+                if (from.name != "CheckoutPay") {
+                  next({
+                    path: '/checkout/pay',
+                  })
+                }
+                else {
+                  next();
+                }
+              }
+            }
+          ]
         },
 
       ],
