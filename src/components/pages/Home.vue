@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
       <a class="navbar-brand p-2" href="#">EASON</a>
       <button
         class="navbar-toggler"
@@ -30,8 +30,66 @@
         </ul>
       </div>
     </nav>
+    <a href="#" id="gotoTop" title="回到頂端">
+      <i class="fas fa-arrow-alt-circle-up"></i>
+    </a>
     <div class="container">
       <router-view></router-view>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "home",
+  data() {
+    return {};
+  }
+};
+
+window.onscroll = function() {
+  scrollFunction();
+};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("gotoTop").style.display = "block";
+  } else {
+    document.getElementById("gotoTop").style.display = "none";
+  }
+}
+
+window.addEventListener("resize", resizeFunction);
+
+function resizeFunction() {
+  if (screen.width < 540) {
+    document.getElementById("gotoTop").style.right = 0;
+  } else {
+    document.getElementById("gotoTop").style.right = 30;
+  }
+}
+</script>
+
+<style scoped>
+body {
+  font-family: 微軟正黑體;
+}
+#gotoTop {
+  display: none;
+  position: fixed;
+  bottom: 15%;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  color: rgb(0, 139, 0);
+  cursor: pointer;
+  font-size: 40px;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+#gotoTop:hover {
+  opacity: 1;
+}
+</style>

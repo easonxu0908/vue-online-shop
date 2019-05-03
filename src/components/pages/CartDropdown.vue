@@ -10,7 +10,7 @@
       <span class="badge badge-pill badge-danger">{{ cartlist.length }}</span>
       <span class="sr-only">unread messages</span>
     </button>
-    <div class="dropdown-menu dropdown-menu-right p-3" style="min-width: 300px;" data-offset="400">
+    <div class="dropdown-menu dropdown-menu-right p-3" style="min-width: 300px;" data-offset="0">
       <h6>已選擇商品</h6>
       <table class="table table-sm">
         <tbody v-for="(item,index) in cartlist" :key="index">
@@ -130,11 +130,7 @@ export default {
         $("#removeModal").modal("hide");
         this.tempDel = {};
         this.getCartList();
-        // $(".navbar").addClass('fixed-top');
       });
-    },
-    hiddenModal() {
-      // $(".navbar").addClass('fixed-top');
     }
   },
   created() {
@@ -143,9 +139,6 @@ export default {
     vm.$bus.$on("DropMenu:getCartList", () => {
       vm.getCartList();
     });
-  },
-  mounted() {
-    // $(this.$refs.removeModal).on("hidden.bs.modal", this.hiddenModal)
   }
 };
 </script>

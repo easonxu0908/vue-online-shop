@@ -43,7 +43,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: 'https://easonxu0908.github.io/vue-online-shop/dist/index.html',
+    assetsPublicPath: '/vue-online-shop/dist/',
 
     /**
      * Source Maps
