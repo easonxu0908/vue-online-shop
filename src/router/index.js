@@ -12,6 +12,7 @@ import CheckoutInfo from '@/components/pages/CheckoutInfo';
 import CheckoutPay from '@/components/pages/CheckoutPay';
 import CheckoutFinish from '@/components/pages/CheckoutFinish';
 import Orders from '@/components/pages/admin/Orders';
+import SearchOrder from '@/components/pages/SearchOrder';
 import Coupon from '@/components/pages/admin/Coupon';
 
 Vue.use(Router)
@@ -37,6 +38,11 @@ export default new Router({
           path: '/',
           name: 'CustomerOders',
           component: CustomerOders,
+        },
+        {
+          path: '/searchOrder',
+          name: 'SearchOrder',
+          component: SearchOrder,
         },
         {
           path: '/',
@@ -93,6 +99,11 @@ export default new Router({
           path: 'customer_checkout/:orderId',
           name: 'CustomerCheckout,',
           component: CustomerCheckout,
+        },
+        {
+          path: 'search_order',
+          name: 'SearchOrder,',
+          component: SearchOrder,
         }
       ],
     },

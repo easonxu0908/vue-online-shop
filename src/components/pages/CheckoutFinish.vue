@@ -9,12 +9,12 @@
         <h5 class="py-3 mt-4 mt-md-5 mb-2 text-center bg-light">訂單資訊</h5>
         <div class="text-center font-weight-bold">
           訂單編號：
-          <!-- <span
+          <span
             class="orderID position-relative"
             :data-clipboard-text="orderID"
             type="text"
             @click.prevent="copy()"
-          >{{orderID}}</span>-->
+          >{{orderID}}</span>
           <span
             class="copy font-weight-light text-muted ml-1 mt-1 position-absolute d-md-inline d-none"
             style="font-size:13px"
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-// import Clipboard from "clipboard"; //剪貼簿
+import Clipboard from "clipboard"; //剪貼簿
 
 export default {
   props: ["step"],
@@ -111,21 +111,21 @@ export default {
           vm.user = response.data.order.user;
         }
       });
+    },
+    copy() {
+      var clipboard = new Clipboard(".orderID");
+      this.copyStatus = "可複製";
+      clipboard.on("success", e => {
+        this.copyStatus = "已複製";
+        clipboard.destroy();
+      });
+      clipboard.on("error", e => {
+        // 不支持複製
+        alert("該瀏覽器不支持自動複製");
+        // 釋放內存
+        clipboard.destroy();
+      });
     }
-    // copy() {
-    //   var clipboard = new Clipboard(".orderID");
-    //   this.copyStatus = "可複製";
-    //   clipboard.on("success", e => {
-    //     this.copyStatus = "已複製";
-    //     clipboard.destroy();
-    //   });
-    //   clipboard.on("error", e => {
-    //     // 不支持複製
-    //     alert("該瀏覽器不支持自動複製");
-    //     // 釋放內存
-    //     clipboard.destroy();
-    //   });
-    // }
   },
   created() {
     this.orderID = this.$route.params.id;

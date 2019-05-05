@@ -4,108 +4,79 @@
       <CartDropdown/>
     </div>
     <loading :active.sync="isLoading"></loading>
-    <!-- 選購區 -->
-    <div class="row mt-4">
-      <div class="col-md-4 mb-4" v-for="item in products" :key="item.id">
-        <div class="card border-0 shadow-sm">
-          <div
-            style="height: 150px; background-size: contain; background-repeat: no-repeat; background-position: center"
-            :style="{backgroundImage:`url(${item.imageUrl})`}"
-          ></div>
-          <div class="card-body">
-            <span class="badge badge-primary float-right ml-2">{{item.category}}</span>
-            <h5 class="card-title">
-              <a href="#" class="text-dark">{{item.title}}</a>
-            </h5>
-            <p class="card-text">{{item.content}}</p>
-            <div class="d-flex justify-content-between align-items-baseline">
-              <div class="h5" v-if="!item.price">{{item.origin_price}}</div>
-              <del class="h6" v-if="item.origin_price">原價{{item.origin_price}}</del>
-              <div class="h5" v-if="item.price">現在只要{{item.price}}</div>
-            </div>
-          </div>
-          <div class="card-footer d-flex">
-            <button
-              type="button"
-              class="btn btn-outline-secondary btn-sm"
-              @click="getProduct(item.id)"
-            >
-              <i class="fas fa-spinner fa-spin" v-if="status.loadingItem ===item.id"></i>
-              查看更多
-            </button>
-            <button
-              type="button"
-              class="btn btn-outline-danger btn-sm ml-auto"
-              @click="addtoCart(item.id)"
-            >
-              <i class="fas fa-spinner fa-spin" v-if="status.loadingItem ===item.id"></i>
-              加到購物車
-            </button>
-          </div>
-        </div>
+    <div class="jumbotron jumbotron-fluid jumbotron-bg d-flex align-items-end jumbotron-img">
+      <div class="container">
+        <div class="p-3 bg-lighter"></div>
       </div>
     </div>
     <!-- 選購區 -->
-
-    <!-- 分頁 -->
-    <Pagination class="ml-auto" :pagination="pagination" v-on:getPageProducts="getProducts"/>
-
-    <!-- 分頁 -->
-    <!-- 選購區 -->
-
-    <!-- 購物車 -->
-    <!-- <div class="container">
-      <div class="row justify-content-center mt-4">
-        <div class="col-md-6">
-          <div class="h4 text-center mb-4">
-            <span>購物車</span>
-          </div>
-          <table class="table">
-            <thead>
-              <th></th>
-              <th>品名</th>
-              <th>數量</th>
-              <th>單價</th>
-            </thead>
-            <tbody>
-              <tr v-for="item in cart.carts" :key="item.id">
-                <td class="align-middle">
-                  <button
-                    type="button"
-                    class="btn btn-outline-danger btn-sm"
-                    @click="removeCartItem(item.id)"
-                  >
-                    <i class="far fa-trash-alt"></i>
-                  </button>
-                </td>
-                <td class="align-middle">
-                  {{ item.product.title }}
-                  <div class="text-success" v-if="item.coupon">已套用優惠券</div>
-                </td>
-                <td class="align-middle">{{ item.qty }}/{{ item.product.unit }}</td>
-                <td class="align-middle text-right">{{ item.final_total }}</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="3" class="text-right">總計</td>
-                <td class="text-right">{{ cart.total }}</td>
-              </tr>
-              <tr v-if="cart.final_total !== cart.total">
-                <td colspan="3" class="text-right text-success">折扣價</td>
-                <td class="text-right text-success">{{ cart.final_total }}</td>
-              </tr>
-            </tfoot>
-          </table>
-          <div class="input-group mb-3 input-group-sm">
-            <input type="text" class="form-control" v-model="coupon_code" placeholder="請輸入優惠碼">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" @click="addCouponCode">套用優惠碼</button>
+    <div class="container">
+      <div class="row mt-4">
+        <div class="col-lg-3 col-md-4">
+          <div class="sticky-top" style="top:56px">
+            <div class="list-group list-group-flush">
+              <span class="font-weight-bold p-2">產品分類</span>
+              <a
+                class="list-group-item list-group-item-action active"
+                data-toggle="list"
+                href="#"
+                @click.prevent="currentPage ='全部',status.filter=false"
+              >全部</a>
+              <a
+                class="list-group-item list-group-item-action"
+                data-toggle="list"
+                href="#"
+                @click.prevent="currentPage ='鞋子',status.filter=true "
+              >鞋子</a>
+              <a
+                class="list-group-item list-group-item-action"
+                data-toggle="list"
+                href="#"
+                @click.prevent="currentPage ='褲子',status.filter=true"
+              >褲子</a>
+              <a
+                href="#"
+                class="list-group-item list-group-item-action"
+                data-toggle="list"
+                @click.prevent="currentPage ='甜點',status.filter=true"
+              >甜點</a>
+              <a
+                href="#"
+                class="list-group-item list-group-item-action"
+                data-toggle="list"
+                @click.prevent="currentPage ='麵包',status.filter=true"
+              >麵包</a>
             </div>
           </div>
         </div>
+        <div class="col-lg-9 col-md-8">
+          <div class="row">
+            <template v-for="(item,key) in filterProducts">
+              <div div class="col-lg-4 col-md-6 mb-4" :key="key">
+                <CustomerOrdersCard
+                  :item="item"
+                  v-on:addtoCart="addtoCart"
+                  :status="status.loadingItem"
+                />
+              </div>
+            </template>
+          </div>
+          <!-- 分頁 -->
+          <Pagination
+            class="d-flex mx-auto"
+            :pagination="pagination"
+            v-on:getPageProducts="getProducts"
+          />
+          <!-- 分頁 -->
+        </div>
       </div>
-    </div>-->
+      <!-- 選購區 -->
+    </div>
+
+    <!-- 選購區 -->
+
+    <!-- 購物車 -->
+
     <!-- 購物車 -->
 
     <!-- 消費者資訊 -->
@@ -247,25 +218,29 @@
 import $ from "jquery";
 import Pagination from "@/components/pages/Pagination.vue";
 import CartDropdown from "@/components/pages/CartDropdown.vue";
+import CustomerOrdersCard from "@/components/pages/CustomerOrdersCard.vue";
 
 export default {
   data() {
     return {
+      allProducts: [],
       products: [],
+      currentPage: "全部",
       product: {},
       pagination: {},
       cart: {},
-      form: {
-        user: {
-          name: "",
-          email: "",
-          tel: "",
-          address: ""
-        },
-        message: ""
-      },
+      // form: {
+      //   user: {
+      //     name: "",
+      //     email: "",
+      //     tel: "",
+      //     address: ""
+      //   },
+      //   message: ""
+      // },
       status: {
-        loadingItem: ""
+        loadingItem: "",
+        filter: false
       },
 
       coupon_code: "",
@@ -274,7 +249,8 @@ export default {
   },
   components: {
     Pagination,
-    CartDropdown
+    CartDropdown,
+    CustomerOrdersCard
   },
   methods: {
     getProducts(page = 1) {
@@ -288,6 +264,14 @@ export default {
         vm.isLoading = false;
         vm.products = response.data.products;
         vm.pagination = response.data.pagination;
+      });
+    },
+    getAllProducts() {
+      const api = `${process.env.APIPATH}/api/${
+        process.env.CUSTOMPATH
+      }/products`;
+      this.$http.get(api).then(response => {
+        this.allProducts = response.data.products;
       });
     },
     getProduct(id) {
@@ -372,14 +356,38 @@ export default {
             vm.isLoading = false;
           });
         } else {
+          vm.$bus.$emit("message:push", "欄位不完整", "danger");
           console.log("欄位不完整");
         }
       });
     }
   },
+  computed: {
+    filterProducts() {
+      var vm = this;
+      if (vm.currentPage == "全部") {
+        return this.products;
+      } else {
+        return this.allProducts.filter(function(item, index) {
+          if (item.category == vm.currentPage) return true;
+        });
+      }
+    }
+  },
   created() {
     this.getProducts();
+    this.getAllProducts();
     this.getCart();
   }
 };
 </script>
+
+<style scoped>
+.jumbotron-img {
+  background-image: url("../../../image/david-lezcano-225889-unsplash.jpg");
+  background-repeat: no-repeat;
+  background-position: 10% 50%;
+  background-size: cover;
+  height: 250px;
+}
+</style>

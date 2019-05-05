@@ -22,16 +22,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
+            <router-link to="/searchOrder">
+              <a class="nav-link" href="#">訂單查詢</a>
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/login" class="d-md-inline-block">
               <a class="nav-link" href="#">管理者登入</a>
-            </router-link>
-          </li>
-          <li class="float-right">
-            <router-link to="/login" class="mr-3 d-md-inline-block">
-              <i class="fas fa-user text-muted fa-2x"></i>
             </router-link>
           </li>
         </ul>
@@ -40,9 +37,7 @@
     <a href="#" id="gotoTop" title="回到頂端">
       <i class="fas fa-arrow-alt-circle-up"></i>
     </a>
-    <div class="container">
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
     <Footer/>
   </div>
 </template>
