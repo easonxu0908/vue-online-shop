@@ -4,7 +4,7 @@
       <CartDropdown/>
     </div>-->
     <loading :active.sync="isLoading"></loading>
-    <div class="jumbotron jumbotron-fluid jumbotron-bg d-flex align-items-end jumbotron-img">
+    <div class="jumbotron jumbotron-fluid jumbotron-bg d-flex align-items-end jumbotron-img mt-5">
       <div class="container">
         <div class="p-3 bg-lighter"></div>
       </div>
@@ -15,7 +15,6 @@
         <div class="col-lg-3 col-md-4">
           <div class="sticky-top" style="top:56px">
             <div class="list-group list-group-flush">
-              <span class="font-weight-bold p-2">產品分類</span>
               <a
                 class="list-group-item list-group-item-action active"
                 data-toggle="list"

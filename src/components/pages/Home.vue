@@ -32,14 +32,14 @@
           </li>
         </ul>
       </div>
-      <router-link class="d-none d-sm-inline-block mr-4 ml-3 mt-1" to="/Cart">
+      <router-link class="d-inline-block mr-4 ml-3 mt-1" to="/cart">
         <CartIcon/>
       </router-link>
     </nav>
     <a href="#" id="gotoTop" title="回到頂端">
       <i class="fas fa-arrow-alt-circle-up"></i>
     </a>
-    <router-view></router-view>
+    <router-view style="margin-top:60px"></router-view>
     <Footer/>
   </div>
 </template>

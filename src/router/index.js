@@ -46,7 +46,7 @@ export default new Router({
           component: SearchOrder,
         },
         {
-          path: '/Cart',
+          path: '/cart',
           name: 'Cart',
           component: Cart,
         },
