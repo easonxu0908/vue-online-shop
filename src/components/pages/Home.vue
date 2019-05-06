@@ -16,10 +16,9 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="#">
-              Home
-              <span class="sr-only">(current)</span>
-            </a>
+            <router-link to="/">
+              <a class="nav-link" href="#">Home</a>
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/searchOrder">
@@ -33,6 +32,9 @@
           </li>
         </ul>
       </div>
+      <router-link class="d-none d-sm-inline-block mr-4 ml-3 mt-1" to="/Cart">
+        <CartIcon/>
+      </router-link>
     </nav>
     <a href="#" id="gotoTop" title="回到頂端">
       <i class="fas fa-arrow-alt-circle-up"></i>
@@ -44,14 +46,15 @@
 
 <script>
 import Footer from "@/components/Footer";
-
+import CartIcon from "@/components/CartIcon";
 export default {
   name: "home",
   data() {
     return {};
   },
   components: {
-    Footer
+    Footer,
+    CartIcon
   }
 };
 

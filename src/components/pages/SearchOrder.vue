@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="dropdown">
+    <!-- <div class="dropdown">
       <CartDropdown ref="CartDropdown"/>
-      <!--CartDropdown-->
-    </div>
+     
+    </div>-->
 
     <div class="container main-contant py-3">
       <h5 class="py-3 mb-2 text-center font-weight-bold">查詢訂單</h5>
@@ -92,7 +92,7 @@
 </template>
 <script>
 import $ from "jquery";
-import CartDropdown from "@/components/pages/CartDropdown.vue";
+// import CartDropdown from "@/components/pages/CartDropdown.vue";
 
 export default {
   data() {
@@ -135,7 +135,7 @@ export default {
     $(".navbar-nav").css("marginRight", "60px");
   },
   components: {
-    CartDropdown
+    // CartDropdown
   }
 };
 </script>

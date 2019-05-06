@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="dropdown">
+    <!-- <div class="dropdown">
       <CartDropdown/>
-    </div>
+    </div>-->
     <loading :active.sync="isLoading"></loading>
     <div class="jumbotron jumbotron-fluid jumbotron-bg d-flex align-items-end jumbotron-img">
       <div class="container">
@@ -53,11 +53,7 @@
           <div class="row">
             <template v-for="(item,key) in filterProducts">
               <div div class="col-lg-4 col-md-6 mb-4" :key="key">
-                <CustomerOrdersCard
-                  :item="item"
-                  v-on:addtoCart="addtoCart"
-                  :status="status.loadingItem"
-                />
+                <CustomerOrdersCard :item="item" v-on:addtoCart="addtoCart" :status="status"/>
               </div>
             </template>
           </div>
@@ -161,7 +157,7 @@
     <!-- 消費者收件資訊 -->
 
     <!-- 詳細商品內容 -->
-    <div
+    <!-- <div
       class="modal fade"
       id="productModal"
       tabindex="-1"
@@ -209,7 +205,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
     <!-- 詳細商品內容 -->
   </div>
 </template>
@@ -217,7 +213,7 @@
 <script>
 import $ from "jquery";
 import Pagination from "@/components/pages/Pagination.vue";
-import CartDropdown from "@/components/pages/CartDropdown.vue";
+// import CartDropdown from "@/components/pages/CartDropdown.vue";
 import CustomerOrdersCard from "@/components/pages/CustomerOrdersCard.vue";
 
 export default {
@@ -249,7 +245,7 @@ export default {
   },
   components: {
     Pagination,
-    CartDropdown,
+    // CartDropdown,
     CustomerOrdersCard
   },
   methods: {
@@ -297,7 +293,8 @@ export default {
       };
       this.$http.post(url, { data: cart }).then(response => {
         console.log(response.data);
-        this.$bus.$emit("DropMenu:getCartList");
+        // this.$bus.$emit("DropMenu:getCartList");
+        this.$bus.$emit("cart:update");
         vm.getCart();
         $("#productModal").modal("hide");
       });
