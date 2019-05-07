@@ -40,12 +40,12 @@
 </template>
 <script>
 export default {
-  props: ["step", "userdata"],
+  props: ["step", "userdata", "propsOrderID"],
   data() {
     return {
       orderID: "",
       orderTotal: 0,
-      cart: [],
+      // cart: [],
       isLoading: false,
       status: {
         pay: false
@@ -54,57 +54,42 @@ export default {
   },
   methods: {
     getCartList() {
-      var vm = this;
+      let vm = this;
       vm.isLoading = true;
       const cartApi = `${process.env.APIPATH}/api/${
         process.env.CUSTOMPATH
       }/cart`;
       this.$http.get(cartApi).then(response => {
         vm.isLoading = false;
-        vm.cart = response.data.data.carts;
+        // vm.cart = response.data.data.carts;
         vm.orderTotal = response.data.data.final_total;
+        vm.orderID = vm.propsOrderID;
+
+        console.log(vm.propsOrderID);
+        console.log(vm.step);
+        console.log(vm.userdata);
       });
     },
     pay() {
-      var vm = this;
+      let vm = this;
+      vm.orderID = vm.propsOrderID;
+      console.log(vm.propsOrderID);
       this.$validator.validate().then(result => {
         if (result) {
-          //建立訂單 start-------------------------------
-          function order() {
-            return new Promise((resolve, reject) => {
-              const orderApi = `${process.env.APIPATH}/api/${
-                process.env.CUSTOMPATH
-              }/order`;
-              vm.isLoading = true;
-              vm.$http.post(orderApi, { data: vm.userdata }).then(response => {
-                if (response.data.success) {
-                  vm.orderID = response.data.orderId;
-                  resolve(response);
-                } else {
-                  if (response.message) {
-                    alert(response.data.message);
-                  } else if (response.messages) {
-                    alert(response.data.messages);
-                  }
-                }
-              });
-            });
-          }
-          //付款start ---------------------
-          order().then(response => {
-            const payApi = `${process.env.APIPATH}/api/${
-              process.env.CUSTOMPATH
-            }/pay/${vm.orderID}`;
-            vm.$http.post(payApi).then(response => {
-              if (response.data.success) {
-                this.$router.push(`/finish/${vm.orderID}`);
-                this.$emit("step", (this.currentStep = "finish"));
-              } else {
-                alert("付款失敗");
-              }
-            });
+          const payApi = `${process.env.APIPATH}/api/${
+            process.env.CUSTOMPATH
+          }/pay/${vm.orderID}`;
+          vm.$http.post(payApi).then(response => {
+            if (response.data.success) {
+              this.$router.push(`/finish/${vm.orderID}`);
+              this.$emit("step", (this.currentStep = "finish"));
+            } else {
+              alert("付款失敗");
+              console.log(response);
+            }
           });
         } else {
+          alert("資料有誤");
           // console.log("資料有誤")
         }
       });

@@ -26,7 +26,13 @@
         </div>
       </section>
 
-      <router-view :step="currentStep" :userdata="data" @step="currentStep = $event"></router-view>
+      <router-view
+        :step="currentStep"
+        :userdata="data"
+        :propsOrderID="orderId"
+        @step="currentStep = $event"
+        @emitOrderId="getOrderID"
+      ></router-view>
     </div>
   </div>
 </template>
@@ -38,6 +44,7 @@ export default {
   data() {
     return {
       currentStep: "info",
+      orderId: "",
       data: {
         user: {
           name: "",
@@ -49,7 +56,14 @@ export default {
       }
     };
   },
-  methods: {},
+  methods: {
+    getOrderID(id) {
+      console.log(id);
+      let vm = this;
+      vm.orderId = id;
+      console.log(vm.orderId);
+    }
+  },
   created() {}
 };
 </script>

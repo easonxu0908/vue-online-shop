@@ -44,7 +44,7 @@
                   <th>
                     <span class="ml-2">商品名稱</span>
                   </th>
-                  <th width="60">數量</th>
+                  <th width="60" class="text-right">數量</th>
                   <th width="60" class="text-right">小計</th>
                   <th width="60"></th>
                 </tr>
@@ -61,7 +61,7 @@
                   <td class="align-middle">
                     <span class="ml-2">{{ item.product.title }}</span>
                   </td>
-                  <td class="align-middle">{{ item.qty }}</td>
+                  <td class="align-middle text-right">{{ item.qty }}</td>
                   <td class="align-middle text-right">{{ item.product.price | currency }}</td>
                   <td class="align-middle text-right">
                     <button
@@ -119,16 +119,14 @@
                 </div>
               </div>
 
-              <div class="border border-muted border-top-1 mb-5"></div>
+              <div class="border border-muted border-top-1 mb-3"></div>
 
               <p class="card-text h6 d-flex">
                 <span>結帳總金額</span>
                 <span class="ml-auto">{{ cart.final_total | currency }}</span>
               </p>
 
-              <div class="text-right mt-3">
-                <button class="btn btn-danger">前往結帳</button>
-              </div>
+              <router-link class="btn btn-danger btn-block mt-4" to="/checkout">結帳去</router-link>
             </div>
           </div>
         </div>

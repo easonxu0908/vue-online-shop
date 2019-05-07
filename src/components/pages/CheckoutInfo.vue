@@ -176,7 +176,7 @@
           </div>
           <div class="text-right">
             <router-link to="/" class="btn btn-secondary mr-3">繼續選購</router-link>
-            <button type="submit" class="btn btn-primary mr-3" @click.prevent="pay()">確認付款</button>
+            <button type="submit" class="btn btn-primary mr-3" @click.prevent="createOrder()">確認付款</button>
           </div>
         </form>
       </div>
@@ -238,7 +238,7 @@
 import $ from "jquery";
 
 export default {
-  props: ["step", "userdata"],
+  props: ["step", "userdata", "propsOrderID"],
   data() {
     return {
       cart: [],
@@ -263,26 +263,28 @@ export default {
         else vm.shippingFee = 80;
       });
     },
-    removeModal(item) {
-      $("#removeModal").modal("show");
-      this.tempItem = item;
-    },
-    delItem() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${
-        this.tempItem.id
-      }`;
-      this.status.del = true;
-      this.$http.delete(api).then(response => {
-        this.status.del = false;
-        $("#removeModal").modal("hide");
-        this.tempDel = {};
-        this.getCartList();
-      });
-    },
-    pay() {
+    createOrder() {
       var vm = this;
       this.$validator.validate().then(result => {
         if (result) {
+          const orderApi = `${process.env.APIPATH}/api/${
+            process.env.CUSTOMPATH
+          }/order`;
+          vm.isLoading = true;
+          vm.$http.post(orderApi, { data: vm.userdata }).then(response => {
+            if (response.data.success) {
+              vm.orderID = response.data.orderId;
+              console.log(vm.orderID);
+              this.$emit("emitOrderId", vm.orderID);
+              this.$bus.$emit("cart:update");
+            } else {
+              if (response.message) {
+                alert(response.data.message);
+              } else if (response.messages) {
+                alert(response.data.messages);
+              }
+            }
+          });
           this.$router.push(`/checkout/pay`);
           this.$emit("step", (this.currentStep = "pay"));
         } else {

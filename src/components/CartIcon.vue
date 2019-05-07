@@ -4,7 +4,7 @@
       <i class="fas fa-shopping-cart text-dark fa-2x">
         <!-- <div class="cart-quantity bg-danger text-white" v-if="cartLen>0">{{ cartLen }}</div> -->
       </i>
-      <span class="badge badge-pill badge-danger">{{ cartLen }}</span>
+      <span class="badge badge-pill badge-danger" v-if="cartLen !== 0">{{ cartLen }}</span>
     </div>
   </div>
 </template>
