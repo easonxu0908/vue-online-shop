@@ -31,7 +31,6 @@
         :userdata="data"
         :propsOrderID="orderId"
         @step="currentStep = $event"
-        @emitOrderId="getOrderID"
       ></router-view>
     </div>
   </div>
@@ -44,7 +43,7 @@ export default {
   data() {
     return {
       currentStep: "info",
-      orderId: "",
+      orderId: "123",
       data: {
         user: {
           name: "",

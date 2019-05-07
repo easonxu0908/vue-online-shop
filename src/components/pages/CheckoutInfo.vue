@@ -275,7 +275,8 @@ export default {
             if (response.data.success) {
               vm.orderID = response.data.orderId;
               console.log(vm.orderID);
-              this.$emit("emitOrderId", vm.orderID);
+              vm.propsOrderID = vm.orderID;
+              console.log(vm.propsOrderID);
               this.$bus.$emit("cart:update");
             } else {
               if (response.message) {
