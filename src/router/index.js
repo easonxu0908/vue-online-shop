@@ -71,9 +71,9 @@ export default new Router({
               component: CheckoutFinish,
               beforeEnter: (to, from, next) => {
                 console.log(to, from, next);
-                if (from.name != "CheckoutPay") {
+                if (from.name != "CheckoutInfo") {
                   next({
-                    path: '/checkout/pay',
+                    path: '/checkout',
                   })
                 }
                 else {

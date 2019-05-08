@@ -3,29 +3,6 @@
     <div class="container" v-if="cart.total!=0">
       <div class="row">
         <div class="col-12 col-md-6 col-lg-9">
-          <!-- <div
-            class="item d-flex align-items-center mb-2 row"
-            v-for="item in cart.carts"
-            :key="item.id"
-          >
-            <div
-              class="item-image ml-3 ml-sm-auto"
-              :style="{'backgroundImage': `url(${item.product.imageUrl})`}"
-            ></div>
-            <div class="item-title ml-2">{{ item.product.title }}</div>
-            <div class="item-quantity">*{{ item.qty }}</div>
-            <div class="item-price ml-2">{{ item.product.price | currency }}</div>
-            <div class="col-1 ml-auto">
-              <button
-                type="button"
-                class="btn btn-outline-danger btn-sm"
-                @click="removeFromCart(item.id)"
-              >
-                <i class="far fa-trash-alt"></i>
-              </button>
-            </div>
-          </div>-->
-
           <div class="card">
             <div class="card-header" id="headingOne">
               <h6 class="mb-0 d-flex align-items-center justify-content-center">
@@ -78,32 +55,6 @@
           </div>
         </div>
         <div class="col-12 col-md-6 col-lg-3 mt-sm-0">
-          <!-- <div class="frame-header">訂單摘要</div> -->
-          <!-- <div class="frame-body">
-            <div>
-              <div class="label">商品總計</div>
-              <div class="price">{{ cart.total | currency }}</div>
-            </div>
-            <div v-if="cart.total != cart.final_total">
-              <div class="label">使用優惠卷折抵</div>
-              <div class="text-danger price">-{{ cart.total-cart.final_total | currency }}</div>
-            </div>
-            <div class="input-group my-3 input-group-sm">
-              <input type="text" class="form-control" placeholder="請輸入優惠碼" v-model="code">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" @click="applyCoupon">套用優惠碼</button>
-              </div>
-            </div>
-            <div class="devider"></div>
-            <div>
-              <div class="label">結帳總金額</div>
-              <div class="price">{{ cart.final_total | currency }}</div>
-            </div>
-            <div class="mt-3 text-right">
-              <button class="btn btn-danger">前往結帳</button>
-            </div>
-          </div>-->
-
           <div class="card">
             <div class="card-header h5">訂單摘要</div>
             <div class="card-body">

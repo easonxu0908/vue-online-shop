@@ -1,11 +1,11 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-
-    <section class="row">
+    <!-- checkout info -->
+    <section class="row" v-if="isInform">
       <!-- 購物籃有商品 start -->
       <div class="col-md-8 col-10 mt-0 mt-md-5 mx-auto" v-if="cart.length !=0">
-        <div class="card d-none d-md-block" v-if="cart.length !=0">
+        <div class="card d-none d-md-block">
           <div class="card-header" id="headingOne">
             <h6 class="mb-0 d-flex align-items-center">
               <a data-toggle="collapse" href="#collapseOne">
@@ -17,51 +17,33 @@
             </h6>
           </div>
         </div>
-        <div id="collapseOne" class="collapse mt-3" v-if="cart.length !=0">
+        <div id="collapseOne" class="collapse show mt-3">
           <table class="table table-sm">
             <thead>
               <tr>
-                <th width="80"></th>
-                <!-- <th></th> -->
+                <th width="100"></th>
                 <th>商品名稱</th>
-                <th width="100">數量</th>
-                <th width="100">單價</th>
-                <th width="80">小計</th>
+                <th width="100" class="text-right">數量</th>
+                <th width="100" class="text-right">單價</th>
+                <th width="80" class="text-right">小計</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item,index) in cart" :key="index">
-                <td class="align-middle text-center">
-                  <a
-                    href="#"
-                    class="text-muted"
-                    data-toggle="modal"
-                    @click.prevent="removeModal(item)"
-                  >
-                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
-                  </a>
-                </td>
-                <!-- <td class="align-middle" style="width:130px">
-                  <img :src="item.product.imageUrl" class="img-fluid img-thumbnail" 
-                  style="width:100%;height:130px;background-size:cover;background-position:center">
-                </td>-->
                 <td class="align-middle">
-                  <router-link :to="{path: 'product/'+item.product.id}">{{item.product.title}}</router-link>
-                </td>
-                <td class="align-middle">{{item.qty}} {{item.product.unit}}</td>
-                <td class="align-middle">{{item.product.price | currency}}</td>
-                <td class="align-middle">{{item.final_total | currency}}</td>
-              </tr>
-              <!-- <tr>
-                <td colspan="4" class="text-right">運費</td>
-                <td class="text-right">
-                  <strong>${{shippingFee}}</strong>
                   <div
-                    class="font-italic text-muted"
-                    style="font-size:13px;margin-left:-16px;"
-                  >-滿 500 免運費</div>
+                    class="card"
+                    style="height: 100px; background-size: cover; background-repeat: no-repeat; background-position: center"
+                    :style="{backgroundImage:`url(${item.product.imageUrl})`}"
+                  ></div>
                 </td>
-              </tr>-->
+
+                <td class="align-middle">{{item.product.title}}</td>
+                <td class="align-middle text-right">{{item.qty}} {{item.product.unit}}</td>
+                <td class="align-middle text-right">{{item.product.price | currency}}</td>
+                <td class="align-middle text-right">{{item.final_total | currency}}</td>
+              </tr>
+
               <tr>
                 <td colspan="4" class="text-right font-weight-bold mt-1">合計</td>
                 <td class="text-right font-weight-bold">
@@ -71,26 +53,16 @@
             </tbody>
           </table>
         </div>
-        <!-- mobile size start -->
+        <!-- 購物車細節mobile size start -->
         <h5 class="d-block d-md-none py-3 mb-2 text-center bg-light">購物車細節</h5>
         <table class="table table-sm d-table d-md-none">
           <tbody>
             <tr v-for="(item,index) in cart" :key="index">
-              <td class="align-middle text-center" width="30">
-                <a
-                  href="#"
-                  class="text-muted"
-                  data-toggle="modal"
-                  @click.prevent="removeModal(item)"
-                >
-                  <i class="fas fa-trash-alt" aria-hidden="true"></i>
-                </a>
-              </td>
               <td class="align-middle" width="60">
                 <img :src="item.product.imageUrl" class="img-fluid img-thumbnail table-mobile-img">
               </td>
               <td class="align-middle" width="100">
-                <router-link :to="{path: 'product/'+item.product.id}">{{item.product.title}}</router-link>
+                {{item.product.title}}
                 <div class="text-muted" style="font-size:0.8rem">
                   數量：{{item.qty}} {{item.product.unit}}
                   <br>
@@ -108,7 +80,7 @@
             </tr>
           </tbody>
         </table>
-        <!-- mobile size end -->
+        <!-- 購物車細節mobile size end -->
 
         <h5 class="py-3 mt-5 mb-2 text-center bg-light">訂購人資訊</h5>
         <form id="needs-validation" novalidate>
@@ -125,7 +97,6 @@
                 :class="{'is-invalid': errors.has('name')}"
                 v-model="userdata.user.name"
               >
-              <!-- <div class="invalid-feedback">請輸入姓名</div> -->
             </div>
             <div class="form-group col-md-6">
               <label for="email">Email</label>
@@ -176,7 +147,7 @@
           </div>
           <div class="text-right">
             <router-link to="/" class="btn btn-secondary mr-3">繼續選購</router-link>
-            <button type="submit" class="btn btn-primary mr-3" @click.prevent="createOrder()">確認付款</button>
+            <button type="submit" class="btn btn-primary mr-3" @click.prevent="createOrder()">確認訂購</button>
           </div>
         </form>
       </div>
@@ -191,46 +162,45 @@
       </div>
       <!-- 購物籃無商品 end -->
     </section>
+    <!-- checkout info -->
 
-    <!--del modal start-->
-    <div
-      class="modal fade"
-      id="removeModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title">刪除商品</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p v-if="tempItem.product">
-              確認刪除
-              <span class="text-success">{{tempItem.product.title}}</span> ?
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">否</button>
-            <button
-              type="button"
-              class="btn btn-outline-danger px-5"
-              @click.prevent="delItem()"
-              :class="{'disabled':status.del}"
+    <!-- checkout pay -->
+    <section class="row justify-content-center mt-4 mt-md-5" v-if="ispay">
+      <div class="col-10 col-md-8">
+        <h4 class="text-center">總金額：{{orderTotal | currency}}</h4>
+        <h5 class="py-3 mt-4 mt-md-5 mb-2 text-center bg-light">付款</h5>
+        <div class="form-row">
+          <div class="form-group col-md">
+            <label for>姓名</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="姓名"
+              name="name"
+              v-validate="'required'"
+              :class="{'is-invalid': errors.has('name')}"
             >
-              確認
-              <i class="fas fa-spinner fa-spin pl-2 ml-1" v-if="status.del"></i>
-            </button>
+          </div>
+          <div class="form-group col-md">
+            <label for>電話</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="電話"
+              name="tel"
+              v-validate="'required|numeric'"
+              :class="{'is-invalid': errors.has('tel')}"
+            >
           </div>
         </div>
+
+        <div class="row d-flex justify-content-end mt-4">
+          <button class="btn btn-secondary mr-3" @click.prevent="getOrderInfo()">取得訂單資料</button>
+          <button class="btn btn-outline-primary" @click.prevent="pay()">確認付款</button>
+        </div>
       </div>
-    </div>
-    <!--del modal end-->
+    </section>
+    <!-- checkout pay -->
   </div>
 </template>
 
@@ -238,12 +208,16 @@
 import $ from "jquery";
 
 export default {
-  props: ["step", "userdata", "propsOrderID"],
+  props: ["step", "userdata"],
   data() {
     return {
       cart: [],
       finalTotal: 0,
+      orderTotal: 0,
+      orderID: "",
       tempItem: {},
+      isInform: true,
+      ispay: false,
       isLoading: false,
       status: {
         del: false
@@ -259,8 +233,6 @@ export default {
         vm.isLoading = false;
         vm.cart = response.data.data.carts;
         vm.finalTotal = response.data.data.final_total;
-        if (vm.finalTotal > 500) vm.shippingFee = 0;
-        else vm.shippingFee = 80;
       });
     },
     createOrder() {
@@ -273,12 +245,15 @@ export default {
           vm.isLoading = true;
           vm.$http.post(orderApi, { data: vm.userdata }).then(response => {
             if (response.data.success) {
+              vm.isLoading = false;
+              vm.isInform = false;
+              vm.ispay = true;
               vm.orderID = response.data.orderId;
-              console.log(vm.orderID);
-              vm.propsOrderID = vm.orderID;
-              console.log(vm.propsOrderID);
+              vm.getOrderInfo();
+              this.$emit("step", (this.currentStep = "pay"));
               this.$bus.$emit("cart:update");
             } else {
+              vm.isLoading = false;
               if (response.message) {
                 alert(response.data.message);
               } else if (response.messages) {
@@ -286,9 +261,45 @@ export default {
               }
             }
           });
-          this.$router.push(`/checkout/pay`);
-          this.$emit("step", (this.currentStep = "pay"));
         } else {
+          alert("資料有誤");
+          // console.log("資料有誤")
+        }
+      });
+    },
+    getOrderInfo() {
+      var vm = this;
+      vm.isLoading = true;
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order/${
+        vm.orderID
+      }`;
+      this.$http.get(api).then(response => {
+        if (response.data.success) {
+          vm.isLoading = false;
+          console.log(response);
+          vm.orderTotal = response.data.order.total;
+        }
+      });
+    },
+    pay() {
+      let vm = this;
+      this.$validator.validate().then(result => {
+        if (result) {
+          const payApi = `${process.env.APIPATH}/api/${
+            process.env.CUSTOMPATH
+          }/pay/${vm.orderID}`;
+          vm.$http.post(payApi).then(response => {
+            if (response.data.success) {
+              console.log(response);
+              this.$emit("step", (this.currentStep = "finish"));
+              this.$router.push(`/finish/${vm.orderID}`);
+            } else {
+              alert("付款失敗");
+              console.log(response);
+            }
+          });
+        } else {
+          alert("資料有誤");
           // console.log("資料有誤")
         }
       });
