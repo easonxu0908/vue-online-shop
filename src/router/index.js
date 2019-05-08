@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import HelloWorld from '@/components/HelloWorld';
+
 import Dashboard from '@/components/Dashboard';
 import Login from '@/components/pages/Login';
 import Home from '@/components/pages/Home';
@@ -9,7 +9,7 @@ import CustomerOders from '@/components/pages/CustomerOders';
 import CustomerCheckout from '@/components/pages/CustomerCheckout';
 import Checkout from '@/components/pages/Checkout';
 import CheckoutInfo from '@/components/pages/CheckoutInfo';
-import CheckoutPay from '@/components/pages/CheckoutPay';
+
 import CheckoutFinish from '@/components/pages/CheckoutFinish';
 import Orders from '@/components/pages/admin/Orders';
 import SearchOrder from '@/components/pages/SearchOrder';
@@ -24,12 +24,7 @@ export default new Router({
       path: '*',
       redirect: '/login',
     },
-    // {
-    //   path: '/',
-    //   name: 'HelloWorld',
-    //   component: HelloWorld,
-    //   meta: { requiresAuth: true },
-    // },
+
     {
       path: '/',
       name: 'Home',
@@ -60,11 +55,7 @@ export default new Router({
               name: 'CheckoutInfo',
               component: CheckoutInfo,
             },
-            {
-              path: '/checkout/pay',
-              name: 'CheckoutPay',
-              component: CheckoutPay,
-            },
+
             {
               path: '/finish/:id',
               name: 'CheckoutFinish',
@@ -83,36 +74,35 @@ export default new Router({
             }
           ]
         },
-
       ],
     },
-    {
-      path: '/',
-      name: 'Dashboard',
-      component: Dashboard,
-      children: [
-        {
-          path: '/',
-          name: 'CustomerOders,',
-          component: CustomerOders,
-        },
-        {
-          path: 'customer_oders',
-          name: 'CustomerOders,',
-          component: CustomerOders,
-        },
-        {
-          path: 'customer_checkout/:orderId',
-          name: 'CustomerCheckout,',
-          component: CustomerCheckout,
-        },
-        {
-          path: 'search_order',
-          name: 'SearchOrder,',
-          component: SearchOrder,
-        }
-      ],
-    },
+    // {
+    //   path: '/',
+    //   name: 'Dashboard',
+    //   component: Dashboard,
+    //   children: [
+    //     {
+    //       path: '/',
+    //       name: 'CustomerOders,',
+    //       component: CustomerOders,
+    //     },
+    //     {
+    //       path: 'customer_oders',
+    //       name: 'CustomerOders,',
+    //       component: CustomerOders,
+    //     },
+    //     {
+    //       path: 'customer_checkout/:orderId',
+    //       name: 'CustomerCheckout,',
+    //       component: CustomerCheckout,
+    //     },
+    //     {
+    //       path: 'search_order',
+    //       name: 'SearchOrder,',
+    //       component: SearchOrder,
+    //     }
+    //   ],
+    // },
     {
       path: '/login',
       name: 'Login,',

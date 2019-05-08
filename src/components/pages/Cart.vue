@@ -36,7 +36,10 @@
                     ></div>
                   </td>
                   <td class="align-middle">
-                    <span class="ml-2">{{ item.product.title }}</span>
+                    <span class="ml-2">
+                      <span v-if="item.coupon" class="badge badge-success">套用優惠卷</span>
+                      {{ item.product.title }}
+                    </span>
                   </td>
                   <td class="align-middle text-right">{{ item.qty }}</td>
                   <td class="align-middle text-right">{{ item.product.price | currency }}</td>
@@ -72,8 +75,12 @@
 
               <div class="border border-muted border-top-1 mb-3"></div>
 
-              <p class="card-text h6 d-flex">
+              <p class="card-text h6 d-flex" v-if="cart.total == cart.final_total">
                 <span>結帳總金額</span>
+                <span class="ml-auto">{{ cart.final_total | currency }}</span>
+              </p>
+              <p class="card-text text-success h6 d-flex" v-if="cart.total !== cart.final_total">
+                <span>折扣價</span>
                 <span class="ml-auto">{{ cart.final_total | currency }}</span>
               </p>
 
@@ -97,9 +104,7 @@ export default {
   data() {
     return {
       isLoading: false,
-
       cart: {},
-
       code: ""
     };
   },
@@ -109,6 +114,7 @@ export default {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
       this.$http.get(api).then(response => {
         vm.cart = response.data.data;
+        console.log(response);
       });
     },
     removeFromCart(id) {
@@ -138,16 +144,11 @@ export default {
       vm.isLoading = true;
       this.$http.post(api, { data: { code: vm.code } }).then(response => {
         vm.isLoading = false;
+        console.log(response);
         if (response.data.success) {
-          vm.cart.final_total = response.data.data.final_total;
+          vm.getCart();
         } else {
-          this.$bus.$emit(
-            "message:push",
-            response.data.message,
-            "danger",
-            "100%",
-            "0"
-          );
+          alert(response.data.message);
         }
       });
     }

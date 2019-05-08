@@ -19,18 +19,16 @@
         </div>
       </div>
       <div class="card-footer d-flex">
-        <button type="button" class="btn btn-outline-secondary btn-sm" @click="getProduct(item.id)">
-          <i class="fas fa-spinner fa-spin" v-if="status.loadingItem ===item.id"></i>
-          查看更多
-        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm"
+          @click="getProduct(item.id)"
+        >查看更多</button>
         <button
           type="button"
           class="btn btn-outline-danger btn-sm ml-auto"
           @click="addtoCart(item.id)"
-        >
-          <i class="fas fa-spinner fa-spin" v-if="status.loadingItem ===item.id"></i>
-          加到購物車
-        </button>
+        >加到購物車</button>
       </div>
     </div>
     <!-- 詳細商品內容 -->

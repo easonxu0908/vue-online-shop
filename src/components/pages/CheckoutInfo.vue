@@ -4,7 +4,7 @@
     <!-- checkout info -->
     <section class="row" v-if="isInform">
       <!-- 購物籃有商品 start -->
-      <div class="col-md-8 col-10 mt-0 mt-md-5 mx-auto" v-if="cart.length !=0">
+      <div class="col-md-8 col-10 mt-0 mt-md-5 mx-auto" v-if="cart.length !== 0">
         <div class="card d-none d-md-block">
           <div class="card-header" id="headingOne">
             <h6 class="mb-0 d-flex align-items-center">
@@ -38,16 +38,25 @@
                   ></div>
                 </td>
 
-                <td class="align-middle">{{item.product.title}}</td>
+                <td class="align-middle">
+                  <span v-if="item.coupon" class="badge badge-success">套用優惠卷</span>
+                  {{item.product.title}}
+                </td>
                 <td class="align-middle text-right">{{item.qty}} {{item.product.unit}}</td>
                 <td class="align-middle text-right">{{item.product.price | currency}}</td>
                 <td class="align-middle text-right">{{item.final_total | currency}}</td>
               </tr>
 
-              <tr>
-                <td colspan="4" class="text-right font-weight-bold mt-1">合計</td>
+              <tr v-if="finalTotal == total">
+                <td colspan="4" class="text-right font-weight-bold mt-1">結帳總金額</td>
                 <td class="text-right font-weight-bold">
-                  <strong>${{finalTotal}}</strong>
+                  <strong>{{total | currency}}</strong>
+                </td>
+              </tr>
+              <tr v-if="finalTotal !== total" class="text-success">
+                <td colspan="4" class="text-right font-weight-bold mt-1">折扣價</td>
+                <td class="text-right font-weight-bold">
+                  <strong>{{finalTotal | currency}}</strong>
                 </td>
               </tr>
             </tbody>
@@ -97,6 +106,7 @@
                 :class="{'is-invalid': errors.has('name')}"
                 v-model="userdata.user.name"
               >
+              <span class="text-danger" v-if="errors.has('name')">姓名不能留空。</span>
             </div>
             <div class="form-group col-md-6">
               <label for="email">Email</label>
@@ -110,6 +120,7 @@
                 v-validate="'required|email'"
                 v-model="userdata.user.email"
               >
+              <span class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</span>
             </div>
           </div>
           <div class="form-group">
@@ -124,6 +135,7 @@
               :class="{'is-invalid': errors.has('tel')}"
               v-model="userdata.user.tel"
             >
+            <span class="text-danger" v-if="errors.has('tel')">電話不能留空。</span>
           </div>
           <div class="form-group">
             <label for="address">地址</label>
@@ -137,6 +149,7 @@
               :class="{'is-invalid': errors.has('address')}"
               v-model="userdata.user.address"
             >
+            <span class="text-danger" v-if="errors.has('address')">地址不能留空。</span>
           </div>
           <div class="form-group">
             <label for="message">
@@ -147,7 +160,7 @@
           </div>
           <div class="text-right">
             <router-link to="/" class="btn btn-secondary mr-3">繼續選購</router-link>
-            <button type="submit" class="btn btn-primary mr-3" @click.prevent="createOrder()">確認訂購</button>
+            <button type="submit" class="btn btn-primary mr-3" @click.prevent="createOrder()">送出訂單</button>
           </div>
         </form>
       </div>
@@ -180,6 +193,7 @@
               v-validate="'required'"
               :class="{'is-invalid': errors.has('name')}"
             >
+            <span class="text-danger" v-if="errors.has('address')">姓名不能留空。</span>
           </div>
           <div class="form-group col-md">
             <label for>電話</label>
@@ -191,11 +205,11 @@
               v-validate="'required|numeric'"
               :class="{'is-invalid': errors.has('tel')}"
             >
+            <span class="text-danger" v-if="errors.has('address')">電話不能留空。</span>
           </div>
         </div>
 
         <div class="row d-flex justify-content-end mt-4">
-          <button class="btn btn-secondary mr-3" @click.prevent="getOrderInfo()">取得訂單資料</button>
           <button class="btn btn-outline-primary" @click.prevent="pay()">確認付款</button>
         </div>
       </div>
@@ -213,6 +227,7 @@ export default {
     return {
       cart: [],
       finalTotal: 0,
+      total: 0,
       orderTotal: 0,
       orderID: "",
       tempItem: {},
@@ -233,6 +248,9 @@ export default {
         vm.isLoading = false;
         vm.cart = response.data.data.carts;
         vm.finalTotal = response.data.data.final_total;
+        vm.total = response.data.data.total;
+        // console.log(response);
+        // console.log(vm.cart);
       });
     },
     createOrder() {
@@ -276,7 +294,7 @@ export default {
       this.$http.get(api).then(response => {
         if (response.data.success) {
           vm.isLoading = false;
-          console.log(response);
+          // console.log(response);
           vm.orderTotal = response.data.order.total;
         }
       });
@@ -295,7 +313,7 @@ export default {
               this.$router.push(`/finish/${vm.orderID}`);
             } else {
               alert("付款失敗");
-              console.log(response);
+              // console.log(response);
             }
           });
         } else {
