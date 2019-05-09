@@ -290,8 +290,10 @@ export default {
         product_id: id,
         qty
       };
+      vm.isLoading = true;
       this.$http.post(url, { data: cart }).then(response => {
         console.log(response.data);
+        vm.isLoading = false;
         // this.$bus.$emit("DropMenu:getCartList");
         this.$bus.$emit("cart:update");
         vm.getCart();
@@ -309,54 +311,54 @@ export default {
         vm.cart = response.data.data;
         console.log(vm.cart.carts);
       });
-    },
-    removeCartItem(id) {
-      const url = `${process.env.APIPATH}/api/${
-        process.env.CUSTOMPATH
-      }/cart/${id}`;
-      const vm = this;
-      vm.isLoading = true;
-      this.$http.delete(url).then(response => {
-        console.log(response);
-        vm.isLoading = false;
-        vm.getCart();
-      });
-    },
-    addCouponCode() {
-      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`;
-      const vm = this;
-      const coupon = {
-        code: vm.coupon_code
-      };
-      vm.isLoading = true;
-      this.$http.post(url, { data: coupon }).then(response => {
-        console.log(response);
-        vm.isLoading = false;
-        vm.getCart();
-      });
-    },
-    createOrder() {
-      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`;
-      const vm = this;
-      const order = vm.form;
-      // vm.isLoading = true;
-      this.$validator.validate().then(valid => {
-        if (valid) {
-          this.$http.post(url, { data: order }).then(response => {
-            if (response.data.success) {
-              vm.$router.push(`/customer_checkout/${response.data.orderId}`);
-            } else {
-              vm.$bus.$emit("message:push", response.data.message, "danger");
-            }
-
-            vm.isLoading = false;
-          });
-        } else {
-          vm.$bus.$emit("message:push", "欄位不完整", "danger");
-          console.log("欄位不完整");
-        }
-      });
     }
+    // removeCartItem(id) {
+    //   const url = `${process.env.APIPATH}/api/${
+    //     process.env.CUSTOMPATH
+    //   }/cart/${id}`;
+    //   const vm = this;
+    //   vm.isLoading = true;
+    //   this.$http.delete(url).then(response => {
+    //     console.log(response);
+    //     vm.isLoading = false;
+    //     vm.getCart();
+    //   });
+    // }
+    // addCouponCode() {
+    //   const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`;
+    //   const vm = this;
+    //   const coupon = {
+    //     code: vm.coupon_code
+    //   };
+    //   vm.isLoading = true;
+    //   this.$http.post(url, { data: coupon }).then(response => {
+    //     console.log(response);
+    //     vm.isLoading = false;
+    //     vm.getCart();
+    //   });
+    // },
+    // createOrder() {
+    //   const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`;
+    //   const vm = this;
+    //   const order = vm.form;
+    //   // vm.isLoading = true;
+    //   this.$validator.validate().then(valid => {
+    //     if (valid) {
+    //       this.$http.post(url, { data: order }).then(response => {
+    //         if (response.data.success) {
+    //           vm.$router.push(`/customer_checkout/${response.data.orderId}`);
+    //         } else {
+    //           vm.$bus.$emit("message:push", response.data.message, "danger");
+    //         }
+
+    //         vm.isLoading = false;
+    //       });
+    //     } else {
+    //       vm.$bus.$emit("message:push", "欄位不完整", "danger");
+    //       console.log("欄位不完整");
+    //     }
+    //   });
+    // }
   },
   computed: {
     filterProducts() {
