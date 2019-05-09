@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <div class="card border-0 rounded shadow-sm">
       <div
         class="card-img-top"
@@ -19,11 +20,7 @@
         </div>
       </div>
       <div class="card-footer d-flex">
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-sm"
-          @click="getProduct(item.id)"
-        >查看更多</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" @click=" prodctInfo">查看更多</button>
         <button
           type="button"
           class="btn btn-outline-danger btn-sm ml-auto"
@@ -32,7 +29,7 @@
       </div>
     </div>
     <!-- 詳細商品內容 -->
-    <div
+    <!-- <div
       class="modal fade"
       id="productModal"
       tabindex="-1"
@@ -80,7 +77,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
     <!-- 詳細商品內容 -->
   </div>
 </template>
@@ -88,28 +85,72 @@
 <script>
 import $ from "jquery";
 export default {
-  props: ["item", "status"],
+  // props: ["item", "status"],
+  props: {
+    item: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    },
+    status: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    }
+  },
   data() {
     return {
-      product: {}
+      isLoading: false
+      // product: {}
     };
   },
   methods: {
-    addtoCart(id, qty) {
-      this.$emit("addtoCart", id, qty);
-    },
-    getProduct(id) {
-      const url = `${process.env.APIPATH}/api/${
-        process.env.CUSTOMPATH
-      }/product/${id}`;
+    addtoCart(id, qty = 1) {
+      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
       const vm = this;
-      vm.status.loadingItem = id;
-      this.$http.get(url).then(response => {
+      // vm.status.loadingItem = id;
+      const cart = {
+        product_id: id,
+        qty
+      };
+      vm.isLoading = true;
+      this.$http.post(url, { data: cart }).then(response => {
         console.log(response.data);
-        vm.status.loadingItem = "";
-        vm.product = response.data.product;
-        $("#productModal").modal("show");
+        vm.isLoading = false;
+        this.$bus.$emit("cart:update");
+        $("#productModal").modal("hide");
       });
+    },
+    // getCart() {
+    //   const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
+    //   const vm = this;
+    //   vm.isLoading = true;
+    //   this.$http.get(url).then(response => {
+    //     console.log(response);
+    //     vm.isLoading = false;
+    //     vm.status.loadingItem = "";
+    //     vm.cart = response.data.data;
+    //     console.log(vm.cart.carts);
+    //   });
+    // },
+    // getProduct(id) {
+    //   const url = `${process.env.APIPATH}/api/${
+    //     process.env.CUSTOMPATH
+    //   }/product/${id}`;
+    //   const vm = this;
+    //   vm.status.loadingItem = id;
+    //   this.$http.get(url).then(response => {
+    //     console.log(response.data);
+    //     vm.status.loadingItem = "";
+    //     vm.product = response.data.product;
+    //     $("#productModal").modal("show");
+    //   });
+    // },
+    prodctInfo(id) {
+      const vm = this;
+      vm.$router.push(`/productDetail/${id}`);
     }
   }
 };

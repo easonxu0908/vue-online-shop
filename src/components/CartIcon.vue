@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="cart-icon-border">
-      <i class="fas fa-shopping-cart text-dark fa-2x">
-        <!-- <div class="cart-quantity bg-danger text-white" v-if="cartLen>0">{{ cartLen }}</div> -->
-      </i>
+      <i class="fas fa-shopping-cart text-dark fa-2x"></i>
       <span class="badge badge-pill badge-danger" v-if="cartLen !== 0">{{ cartLen }}</span>
     </div>
   </div>
@@ -42,6 +40,5 @@ export default {
   position: absolute;
   top: -10px;
   right: -10px;
-  /* z-index: 1000; */
 }
 </style>

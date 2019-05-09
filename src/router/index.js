@@ -6,10 +6,9 @@ import Login from '@/components/pages/Login';
 import Home from '@/components/pages/Home';
 import Products from '@/components/pages/admin/Products';
 import CustomerOders from '@/components/pages/CustomerOders';
-import CustomerCheckout from '@/components/pages/CustomerCheckout';
+import CardDetail from '@/components/pages/CardDetail';
 import Checkout from '@/components/pages/Checkout';
 import CheckoutInfo from '@/components/pages/CheckoutInfo';
-
 import CheckoutFinish from '@/components/pages/CheckoutFinish';
 import Orders from '@/components/pages/admin/Orders';
 import SearchOrder from '@/components/pages/SearchOrder';
@@ -24,7 +23,6 @@ export default new Router({
       path: '*',
       redirect: '/login',
     },
-
     {
       path: '/',
       name: 'Home',
@@ -34,6 +32,11 @@ export default new Router({
           path: '/',
           name: 'CustomerOders',
           component: CustomerOders,
+        },
+        {
+          path: 'cardDetail/:prodId',
+          name: 'CardDetail',
+          component: CardDetail,
         },
         {
           path: '/searchOrder',
@@ -55,7 +58,6 @@ export default new Router({
               name: 'CheckoutInfo',
               component: CheckoutInfo,
             },
-
             {
               path: '/finish/:id',
               name: 'CheckoutFinish',
@@ -76,33 +78,6 @@ export default new Router({
         },
       ],
     },
-    // {
-    //   path: '/',
-    //   name: 'Dashboard',
-    //   component: Dashboard,
-    //   children: [
-    //     {
-    //       path: '/',
-    //       name: 'CustomerOders,',
-    //       component: CustomerOders,
-    //     },
-    //     {
-    //       path: 'customer_oders',
-    //       name: 'CustomerOders,',
-    //       component: CustomerOders,
-    //     },
-    //     {
-    //       path: 'customer_checkout/:orderId',
-    //       name: 'CustomerCheckout,',
-    //       component: CustomerCheckout,
-    //     },
-    //     {
-    //       path: 'search_order',
-    //       name: 'SearchOrder,',
-    //       component: SearchOrder,
-    //     }
-    //   ],
-    // },
     {
       path: '/login',
       name: 'Login,',
@@ -133,7 +108,5 @@ export default new Router({
         }
       ],
     },
-
-
   ]
 })
