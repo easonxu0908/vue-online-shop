@@ -34,7 +34,7 @@ export default new Router({
           component: CustomerOders,
         },
         {
-          path: 'cardDetail/:prodId',
+          path: '/cardDetail/:prodId',
           name: 'CardDetail',
           component: CardDetail,
         },

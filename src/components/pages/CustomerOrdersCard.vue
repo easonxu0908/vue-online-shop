@@ -20,7 +20,11 @@
         </div>
       </div>
       <div class="card-footer d-flex">
-        <button type="button" class="btn btn-outline-secondary btn-sm" @click=" prodctInfo">查看更多</button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm"
+          @click=" prodctInfo(item.id)"
+        >查看更多</button>
         <button
           type="button"
           class="btn btn-outline-danger btn-sm ml-auto"
@@ -150,7 +154,8 @@ export default {
     // },
     prodctInfo(id) {
       const vm = this;
-      vm.$router.push(`/productDetail/${id}`);
+      console.log(id);
+      vm.$router.push(`/cardDetail/${id}`);
     }
   }
 };
