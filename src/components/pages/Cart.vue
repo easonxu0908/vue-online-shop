@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <div class="container" v-if="cart.total!=0">
       <div class="row">
         <div class="col-12 col-md-6 col-lg-9">
@@ -112,9 +113,11 @@ export default {
     getCart() {
       const vm = this;
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
+      vm.isLoading = true;
       this.$http.get(api).then(response => {
         vm.cart = response.data.data;
-        console.log(response);
+        vm.isLoading = false;
+        // console.log(response);
       });
     },
     removeFromCart(id) {
@@ -127,13 +130,6 @@ export default {
         vm.isLoading = false;
         if (response.data.success) {
           vm.getCart();
-          this.$bus.$emit(
-            "message:push",
-            "刪除商品成功",
-            "success",
-            "100%",
-            "0"
-          );
           this.$bus.$emit("cart:update");
         }
       });

@@ -109,7 +109,7 @@ export default {
       },
       status: {
         loadingItem: "",
-        filter: false
+        loadingIcon: false
       },
       isLoading: false
     };
@@ -127,6 +127,7 @@ export default {
       vm.isLoading = true;
       this.$http.get(api).then(response => {
         vm.allProducts = response.data.products;
+        console.log(vm.allProducts);
         vm.isLoading = false;
       });
     },
@@ -164,11 +165,6 @@ export default {
   computed: {
     filterProducts() {
       const vm = this;
-      // return vm.allProducts.filter(item => {
-      //   return vm.prodCategory === ""
-      //     ? item
-      //     : item.category === vm.prodCategory;
-      // });
       if (vm.searchFilter || vm.searchResult.length) {
         return vm.searchResult;
       } else {

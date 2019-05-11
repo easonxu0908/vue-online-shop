@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <div class="container">
       <div class="row no-gutters" v-if="product.id">
         <div class="col-md-8 card">

@@ -10,16 +10,16 @@
       <div class="card-body">
         <span class="badge badge-primary float-right ml-2">{{item.category}}</span>
         <h5 class="card-title">
-          <a href="#" class="text-dark">{{item.title}}</a>
+          <span class="text-dark productTitle">{{item.title}}</span>
         </h5>
-        <p class="card-text">{{item.content}}</p>
+        <p class="card-text productContent">{{item.content}}</p>
         <div class="d-flex justify-content-between align-items-baseline">
           <div class="h5" v-if="!item.price">{{item.origin_price}}</div>
           <del class="h6" v-if="item.origin_price">原價{{item.origin_price}}</del>
           <div class="h5" v-if="item.price">現在只要{{item.price}}</div>
         </div>
       </div>
-      <div class="card-footer d-flex" v-if="item.is_enable">
+      <div class="card-footer d-flex" v-if="item.is_enabled">
         <button
           type="button"
           class="btn btn-outline-secondary btn-sm"
@@ -29,10 +29,12 @@
           type="button"
           class="btn btn-outline-danger btn-sm ml-auto"
           @click="addtoCart(item.id)"
-        >加到購物車</button>
+        >
+          <i class="fas fa-spinner fa-spin mr-1" v-if="status.loadingItem === item.id"></i>加到購物車
+        </button>
       </div>
       <div class="card-footer d-flex" v-else>
-        <button type="button" class="btn btn-outline-secondary disabled ml-auto mr-auto w-100">敬請期待</button>
+        <button type="button" class="btn btn-outline-secondary btn-lg btn-block" disabled>敬請期待</button>
       </div>
     </div>
   </div>
@@ -71,44 +73,38 @@ export default {
         product_id: id,
         qty
       };
+      vm.status.loadingItem = id;
       vm.isLoading = true;
       this.$http.post(url, { data: cart }).then(response => {
         console.log(response.data);
         vm.isLoading = false;
+        vm.status.loadingItem = "";
         this.$bus.$emit("cart:update");
         $("#productModal").modal("hide");
       });
     },
-    // getCart() {
-    //   const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
-    //   const vm = this;
-    //   vm.isLoading = true;
-    //   this.$http.get(url).then(response => {
-    //     console.log(response);
-    //     vm.isLoading = false;
-    //     vm.status.loadingItem = "";
-    //     vm.cart = response.data.data;
-    //     console.log(vm.cart.carts);
-    //   });
-    // },
-    // getProduct(id) {
-    //   const url = `${process.env.APIPATH}/api/${
-    //     process.env.CUSTOMPATH
-    //   }/product/${id}`;
-    //   const vm = this;
-    //   vm.status.loadingItem = id;
-    //   this.$http.get(url).then(response => {
-    //     console.log(response.data);
-    //     vm.status.loadingItem = "";
-    //     vm.product = response.data.product;
-    //     $("#productModal").modal("show");
-    //   });
-    // },
     prodctInfo(id) {
       const vm = this;
-      console.log(id);
+      // console.log(id);
       vm.$router.push(`/cardDetail/${id}`);
     }
   }
 };
 </script>
+
+<style scoped>
+.productTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.productContent {
+  /* display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>
