@@ -6,68 +6,88 @@
         <div class="p-3 bg-lighter"></div>
       </div>
     </div>
-    <!-- 選購區 -->
+    <!-- 選購區 start-->
     <div class="container">
+      <p class="text-center h3 mb-3">購物專區</p>
+      <div class="row justify-content-end">
+        <div class="col-md-8 col-lg-4">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control border border-main text-main"
+              placeholder="Search something..."
+              v-model.trim="searchFilter"
+              @input="searchProducts"
+            >
+            <div class="input-group-append">
+              <button
+                class="btn btn-becare text-main border border-main border-left-0"
+                type="button"
+                @click="searchProducts"
+              >
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row mt-4">
-        <div class="col-lg-3 col-md-4">
+        <div class="col-lg-2 col-md-3">
           <div class="sticky-top" style="top:56px">
             <div class="list-group list-group-flush">
               <a
                 class="list-group-item list-group-item-action active"
                 data-toggle="list"
                 href="#"
-                @click.prevent="currentPage ='全部',status.filter=false"
+                @click.prevent="changeTab('')"
               >全部</a>
               <a
                 class="list-group-item list-group-item-action"
                 data-toggle="list"
                 href="#"
-                @click.prevent="currentPage ='鞋子',status.filter=true "
+                @click.prevent="changeTab('鞋子')"
               >鞋子</a>
               <a
                 class="list-group-item list-group-item-action"
                 data-toggle="list"
                 href="#"
-                @click.prevent="currentPage ='褲子',status.filter=true"
+                @click.prevent="changeTab('褲子')"
               >褲子</a>
               <a
                 href="#"
                 class="list-group-item list-group-item-action"
                 data-toggle="list"
-                @click.prevent="currentPage ='甜點',status.filter=true"
+                @click.prevent="changeTab('甜點')"
               >甜點</a>
-              <a
-                href="#"
-                class="list-group-item list-group-item-action"
-                data-toggle="list"
-                @click.prevent="currentPage ='麵包',status.filter=true"
-              >麵包</a>
             </div>
           </div>
         </div>
-        <div class="col-lg-9 col-md-8">
-          <div class="row">
-            <template v-for="(item,key) in filterProducts">
-              <div div class="col-lg-4 col-md-6 mb-4" :key="key">
-                <!-- <CustomerOrdersCard :item="item" v-on:addtoCart="addtoCart" :status="status"/> -->
+        <div class="col-lg-10 col-md-9">
+          <div
+            v-if="(searchFilter || searchResult.length) && searchResult.length == 0"
+            class="alert alert-secondary h-100 d-flex justify-content-center align-items-center"
+          >Sorry,依您的關鍵字「{{searchFilter}}」搜尋不到產品呢...</div>
+          <template v-else>
+            <div class="row">
+              <div v-for="(item,key) in filterPager" class="col-lg-4 col-md-6 mb-4" :key="key">
                 <CustomerOrdersCard :item="item" :status="status"/>
               </div>
-            </template>
-          </div>
-          <!-- 分頁 -->
-          <Pagination
-            class="d-flex mx-auto"
-            :pagination="pagination"
-            v-on:getPageProducts="getProducts"
-          />
-          <!-- 分頁 -->
+            </div>
+            <!-- 分頁 -->
+            <pagination
+              :page-data="pagination"
+              @changepage="getPage"
+              class="d-flex justify-content-center"
+              v-if="pagination.total_pages"
+            ></pagination>
+            <!-- 分頁 -->
+          </template>
         </div>
       </div>
-      <!-- 選購區 -->
+      <!-- 選購區 end-->
     </div>
   </div>
 </template>
-
 <script>
 import $ from "jquery";
 import Pagination from "@/components/pages/Pagination.vue";
@@ -77,16 +97,20 @@ export default {
   data() {
     return {
       allProducts: [],
-      products: [],
-      currentPage: "全部",
-      product: {},
-      pagination: {},
-      cart: {},
+      prodCategory: "",
+      searchFilter: "",
+      searchResult: [],
+      pagination: {
+        page_Size: 6,
+        total_pages: 1,
+        current_page: 1,
+        has_pre: false,
+        has_next: false
+      },
       status: {
         loadingItem: "",
         filter: false
       },
-      coupon_code: "",
       isLoading: false
     };
   },
@@ -95,19 +119,6 @@ export default {
     CustomerOrdersCard
   },
   methods: {
-    getProducts(page = 1) {
-      const url = `${process.env.APIPATH}/api/${
-        process.env.CUSTOMPATH
-      }/products?page=${page}`;
-      const vm = this;
-      vm.isLoading = true;
-      this.$http.get(url).then(response => {
-        console.log(response);
-        vm.isLoading = false;
-        vm.products = response.data.products;
-        vm.pagination = response.data.pagination;
-      });
-    },
     getAllProducts() {
       const api = `${process.env.APIPATH}/api/${
         process.env.CUSTOMPATH
@@ -115,69 +126,77 @@ export default {
       const vm = this;
       vm.isLoading = true;
       this.$http.get(api).then(response => {
-        this.allProducts = response.data.products;
+        vm.allProducts = response.data.products;
         vm.isLoading = false;
       });
-    }
-    // getProduct(id) {
-    //   const url = `${process.env.APIPATH}/api/${
-    //     process.env.CUSTOMPATH
-    //   }/product/${id}`;
-    //   const vm = this;
-    //   vm.status.loadingItem = id;
-    //   this.$http.get(url).then(response => {
-    //     console.log(response.data);
-    //     vm.status.loadingItem = "";
-    //     vm.product = response.data.product;
-    //     $("#productModal").modal("show");
-    //   });
-    // },
-    // addtoCart(id, qty = 1) {
-    //   const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
-    //   const vm = this;
-    //   vm.status.loadingItem = id;
-    //   const cart = {
-    //     product_id: id,
-    //     qty
-    //   };
-    //   vm.isLoading = true;
-    //   this.$http.post(url, { data: cart }).then(response => {
-    //     console.log(response.data);
-    //     vm.isLoading = false;
-    //     this.$bus.$emit("cart:update");
-    //     vm.getCart();
-    //     $("#productModal").modal("hide");
-    //   });
-    // },
-    // getCart() {
-    //   const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
-    //   const vm = this;
-    //   vm.isLoading = true;
-    //   this.$http.get(url).then(response => {
-    //     console.log(response);
-    //     vm.isLoading = false;
-    //     vm.status.loadingItem = "";
-    //     vm.cart = response.data.data;
-    //     console.log(vm.cart.carts);
-    //   });
-    // }
-  },
-  computed: {
-    filterProducts() {
-      var vm = this;
-      if (vm.currentPage == "全部") {
-        return this.products;
-      } else {
-        return this.allProducts.filter(function(item, index) {
-          if (item.category == vm.currentPage) return true;
+    },
+    getPage(page = 1) {
+      const vm = this;
+      // $("html, body").scrollTop($("#position").offset().top);
+      vm.pagination.current_page = page;
+    },
+    searchProducts() {
+      const vm = this;
+      // 重製&清除狀態
+      vm.pagination.current_page = 1;
+      vm.prodCategory = "";
+      if (vm.searchFilter) {
+        vm.searchResult = vm.allProducts.filter(item => {
+          return item.title.match(vm.searchFilter);
         });
+      } else {
+        // 清除搜尋結果
+        vm.searchResult = [];
       }
+    },
+    changeTab(prodCategory) {
+      const vm = this;
+      vm.prodCategory = prodCategory;
+      console.log(vm.prodCategory);
+      vm.pagination.current_page = 1;
+      vm.searchFilter = "";
+      vm.searchResult = [];
     }
   },
   created() {
-    this.getProducts();
     this.getAllProducts();
-    // this.getCart();
+  },
+  computed: {
+    filterProducts() {
+      const vm = this;
+      // return vm.allProducts.filter(item => {
+      //   return vm.prodCategory === ""
+      //     ? item
+      //     : item.category === vm.prodCategory;
+      // });
+      if (vm.searchFilter || vm.searchResult.length) {
+        return vm.searchResult;
+      } else {
+        return vm.allProducts.filter(item => {
+          return vm.prodCategory === ""
+            ? item
+            : item.category === vm.prodCategory;
+        });
+      }
+    },
+    filterPager() {
+      const vm = this;
+      let dataSize = vm.filterProducts.length;
+      const pageSize = vm.pagination.page_Size;
+      vm.pagination.total_pages = Math.ceil(dataSize / pageSize);
+      let nowPage = vm.pagination.current_page;
+      // 上一頁與下一頁邏輯
+      nowPage > 1
+        ? (vm.pagination.has_pre = true)
+        : (vm.pagination.has_pre = false);
+      nowPage < vm.pagination.total_pages && (vm.pagination.has_next = true);
+      nowPage + 1 > vm.pagination.total_pages &&
+        (vm.pagination.has_next = false);
+      return vm.filterProducts.filter((item, index) => {
+        // 資料區間
+        return index < nowPage * pageSize && index >= (nowPage - 1) * pageSize;
+      });
+    }
   }
 };
 </script>

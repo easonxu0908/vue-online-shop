@@ -37,8 +37,8 @@
       </table>
     </div>
 
-    <!-- 分頁 -->
-    <Pagination class="ml-auto" :pagination="pagination" v-on:getPageProducts="getOrders"/>
+    <!-- 分頁-->
+    <!-- <Pagination class="ml-auto" :pagination="pagination" v-on:getPageProducts="getOrders"/> -->
 
     <!-- 修改訂單 -->
 
@@ -160,7 +160,7 @@ export default {
         vm.isLoading = false;
         vm.orders = response.data.orders;
         vm.pagination = response.data.pagination;
-        console.log(vm.pagination);
+        // console.log(vm.pagination);
       });
     },
     openModal(item) {
@@ -179,11 +179,11 @@ export default {
         if (response.data.success) {
           $("#productModal").modal("hide");
           vm.getOrders();
-          console.log("修改成功");
+          // console.log("修改成功");
         } else {
           $("#productModal").modal("hide");
           vm.getOrders();
-          console.log("修改失敗");
+          // console.log("修改失敗");
         }
       });
     },

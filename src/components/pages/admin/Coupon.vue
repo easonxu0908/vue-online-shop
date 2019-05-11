@@ -37,7 +37,12 @@
     </table>
 
     <!-- 分頁 -->
-    <Pagination class="ml-auto" :pagination="pagination" v-on:getPageProducts="getCoupons"/>
+    <Pagination
+      :page-data="pagination"
+      @changepage="getPage"
+      class="d-flex justify-content-center"
+      v-if="pagination.total_pages"
+    />
 
     <!-- 新增/修改優惠卷 -->
 
@@ -190,8 +195,13 @@ export default {
         vm.isLoading = false;
         vm.coupons = response.data.coupons;
         vm.pagination = response.data.pagination;
-        console.log(vm.pagination);
+        // console.log(vm.pagination);
       });
+    },
+    getPage(page = 1) {
+      const vm = this;
+      // $("html, body").scrollTop($("#position").offset().top);
+      vm.pagination.current_page = page;
     },
     openModal(isNew, item) {
       if (isNew) {

@@ -36,7 +36,12 @@
     </table>
 
     <!-- 分頁 -->
-    <Pagination class="ml-auto" :pagination="pagination" v-on:getPageProducts="getProducts"/>
+    <Pagination
+      :page-data="pagination"
+      @changepage="getPage"
+      class="d-flex justify-content-center"
+      v-if="pagination.total_pages"
+    />
 
     <!-- 分頁 -->
 
@@ -257,11 +262,16 @@ export default {
       const vm = this;
       vm.isLoading = true;
       this.$http.get(api).then(response => {
-        // console.log(response.data);
+        console.log(response.data);
         vm.isLoading = false;
         vm.products = response.data.products;
         vm.pagination = response.data.pagination;
       });
+    },
+    getPage(page = 1) {
+      const vm = this;
+      // $("html, body").scrollTop($("#position").offset().top);
+      vm.pagination.current_page = page;
     },
     openModal(isNew, item) {
       if (isNew) {

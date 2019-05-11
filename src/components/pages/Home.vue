@@ -55,21 +55,31 @@ export default {
   components: {
     Footer,
     CartIcon
+  },
+  watch: {
+    "window.onscroll": function() {
+      if (
+        document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20
+      ) {
+        document.getElementById("gotoTop").style.display = "block";
+      } else {
+        document.getElementById("gotoTop").style.display = "none";
+      }
+    }
   }
 };
-
-let vm = this;
-
-window.onscroll = function() {
-  scrollFunction();
-};
-function scrollFunction() {
-  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-    document.getElementById("gotoTop").style.display = "block";
-  } else {
-    document.getElementById("gotoTop").style.display = "none";
-  }
-}
+// let vm = this;
+// window.onscroll = function() {
+//   scrollFunction();
+// };
+// function scrollFunction() {
+//   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+//     document.getElementById("gotoTop").style.display = "block";
+//   } else {
+//     document.getElementById("gotoTop").style.display = "none";
+//   }
+// }
 
 // window.addEventListener("resize", resizeFunction);
 
