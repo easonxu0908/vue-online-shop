@@ -1,7 +1,7 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <div>
+    <!-- <div>
       <table class="table mt-4">
         <thead>
           <tr>
@@ -29,20 +29,317 @@
             </td>
             <td>
               <div class="btn-group" role="group" aria-label="Basic example">
-                <button class="btn btn-outline-primary btn-sm" @click="openModal(item)">編輯</button>
+                <button
+                  class="btn btn-main btn-block"
+                  @click="gopay(option.gopayPath,item.id)"
+                  v-if="!item.is_paid&&!option.editFunction"
+                >結帳</button>
+                <button
+                  class="btn btn-outline-primary btn-sm"
+                  @click="openModal(item)"
+                  v-if="option.editFunction"
+                >編輯</button>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
-    </div>
+    </div>-->
 
-    <!-- 分頁-->
-    <!-- <Pagination class="ml-auto" :pagination="pagination" v-on:getPageProducts="getOrders"/> -->
+    <div class="table-responsive my-3" v-if="orders.length != 0">
+      <table class="table table-hover">
+        <thead class="table-becare">
+          <tr class="text-nowrap">
+            <th width="100">下單時間</th>
+            <th width="300">訂購人資訊</th>
+            <th width="200">購買品項</th>
+            <th>備註</th>
+            <th width="100" class="text-right">總金額</th>
+            <th width="160">是否付款</th>
+            <th width="80">操作</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white">
+          <tr v-for="item in orders" :key="item.id">
+            <td>{{item.create_at | timeTamps}}</td>
+            <td>
+              <ul class="list-group bg-light">
+                <li class="list-group-item">
+                  訂單ID
+                  <br>
+                  {{item.id}}
+                </li>
+                <li class="list-group-item">訂購人：{{item.user.name}}</li>
+                <li class="list-group-item">信箱：{{item.user.email}}</li>
+                <li class="list-group-item">住址：{{item.user.address}}</li>
+                <li class="list-group-item">電話：{{item.user.tel}}</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="list-group">
+                <li v-for="prod in item.products" :key="prod.id" class="list-group-item">
+                  <div class="text-nowrap">
+                    {{prod.product.title}}
+                    <br>
+                    {{prod.qty}} {{prod.product.unit}} -
+                    <span
+                      class="text-main"
+                      v-if="prod.final_total >= prod.total"
+                    >{{prod.final_total | currency}}</span>
+                    <span
+                      class="text-danger"
+                      v-if="prod.final_total < prod.total"
+                    >{{prod.final_total | currency}} ({{prod.coupon.title}})</span>
+                  </div>
+                </li>
+              </ul>
+            </td>
+            <td>{{item.message}}</td>
+            <td class="text-right">{{item.total | currency}}</td>
+            <td>
+              <ul v-if="item.is_paid">
+                <li class="text-success font-weight-bold">已付款</li>
+                <li>{{item.paid_date | timeTamps}}</li>
+              </ul>
+              <span v-else>未付款</span>
+            </td>
+            <td>
+              <button
+                class="btn btn-main btn-block"
+                @click="gopay(option.gopayPath,item.id)"
+                v-if="!item.is_paid&&!option.editFunction"
+              >結帳</button>
+              <button
+                class="btn btn-outline-primary btn-sm"
+                @click="openModal(item)"
+                v-if="option.editFunction"
+              >編輯</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 分頁 start-->
+
+    <Pagination
+      :page-data="pagination"
+      @changepage="getPage"
+      class="d-flex justify-content-center"
+      v-if="pagination.total_pages"
+    />
+    <!-- 分頁 end-->
+
+    <div class="modal" id="productModal">
+      <div slot="modalHeader" class="modal-header bg-main text-white">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <i class="fas fa-edit mr-1"></i>
+          <span>編輯訂單</span>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+      <div slot="modalBody" class="modal-body">
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a
+              class="nav-item nav-link font-weight-bold active"
+              id="nav-orderinfo-tab"
+              data-toggle="tab"
+              href="#nav-orderinfo"
+              role="tab"
+              aria-controls="nav-orderinfo"
+              aria-selected="true"
+            >訂購人資料</a>
+            <a
+              class="nav-item nav-link font-weight-bold"
+              id="nav-prodlist-tab"
+              data-toggle="tab"
+              href="#nav-prodlist"
+              role="tab"
+              aria-controls="nav-prodlist"
+              aria-selected="false"
+            >訂購清單</a>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div
+            class="tab-pane fade show active pt-3"
+            id="nav-orderinfo"
+            role="tabpanel"
+            aria-labelledby="nav-orderinfo-tab"
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="orderName">*訂購人</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="orderName"
+                      name="Name"
+                      v-model="tempOrder.user.name"
+                      placeholder="請輸入姓名"
+                      v-validate="'required'"
+                      :class="{'is-invalid': errors.has('Name')}"
+                    >
+                    <span class="text-danger" v-if="errors.has('Name')">請輸入訂購人姓名</span>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="orderEmail">*信箱</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      :class="{'is-invalid': errors.has('email')}"
+                      name="email"
+                      id="orderEmail"
+                      v-model="tempOrder.user.email"
+                      placeholder="請輸入 Email"
+                      v-validate="'required|email'"
+                    >
+                    <span class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</span>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="orderAddress">*住址</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="orderAddress"
+                      name="address"
+                      :class="{'is-invalid': errors.has('address')}"
+                      v-model="tempOrder.user.address"
+                      placeholder="請輸入住址"
+                      v-validate="'required'"
+                    >
+                    <span class="text-danger" v-if="errors.has('address')">地址欄位不得留空</span>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="orderTel">*電話</label>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="orderTel"
+                      name="regex"
+                      v-model="tempOrder.user.tel"
+                      v-validate="{ required: true, regex: /^([0-9]+)$/ }"
+                      placeholder="請輸入電話"
+                      :class="{'is-invalid': errors.has('regex')}"
+                    >
+                    <span class="text-danger" v-if="errors.has('regex')">僅接受純數字</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="textarea">備註</label>
+                  <textarea
+                    class="form-control"
+                    id="textarea"
+                    rows="3"
+                    v-model="tempOrder.message"
+                    placeholder="請輸入備註"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="is_paid"
+                      v-model="tempOrder.is_paid"
+                    >
+                    <label class="form-check-label" for="is_paid">是否付款</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade pt-3"
+            id="nav-prodlist"
+            role="tabpanel"
+            aria-labelledby="nav-prodlist-tab"
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  class="form-row"
+                  v-for="(item,key, index) in tempOrder.products"
+                  :key="item.id"
+                >
+                  <div class="form-group col-md-9">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span
+                          class="input-group-text bg-main text-white"
+                          id="basic-addon1"
+                        >產品項目 {{index +1}}</span>
+                      </div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        aria-label="prodName"
+                        style="cursor:default;"
+                        readonly
+                        v-model="item.product.title"
+                      >
+                    </div>
+                    <p v-if="item.coupon" class="text-danger font-weight-bold mb-0">
+                      <span>*套用{{item.coupon.title}} 中 -</span>
+                      <span>{{(item.product.price * item.coupon.percent) / 100 | currency}} 1/套</span>
+                    </p>
+                    <p v-else class="text-dontcare mb-0">
+                      <span>未套用酷碰優惠 -</span>
+                      <span>{{item.product.price | currency}} 1/{{item.product.unit}}</span>
+                    </p>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text bg-main text-white" id="basic-addon1">*數量</span>
+                      </div>
+                      <input
+                        type="number"
+                        class="form-control"
+                        aria-label="num"
+                        v-model="item.qty"
+                        :name="`num${index}`"
+                        v-validate="{ required: true, regex: /^([0-9]+)$/ }"
+                        placeholder="請輸入數量"
+                        :class="{'is-invalid': errors.has('num' + index)}"
+                      >
+                    </div>
+                    <p class="mb-0 text-dontcare text-right">
+                      <span
+                        v-if="item.coupon"
+                      >小計 {{((item.product.price * item.coupon.percent) / 100) * item.qty | currency}}</span>
+                      <span v-else>小計 {{(item.product.price * item.qty) | currency}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="text-right text-danger font-weight-bold">總計</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div slot="modalFooter" class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary border-0" data-dismiss="modal">取消</button>
+        <button
+          type="button"
+          class="btn btn-becare text-main"
+          @click="updateOrder"
+          :disabled="status.loading"
+        >
+          <i class="fas fa-spinner fa-spin mr-1" v-if="status.loading"></i>確認
+        </button>
+      </div>
+    </div>
 
     <!-- 修改訂單 -->
 
-    <div
+    <!-- <div
       class="modal fade"
       id="productModal"
       tabindex="-1"
@@ -124,11 +421,11 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary" @click="updataOrder">確認</button>
+            <button type="button" class="btn btn-primary" @click="updateOrder">確認</button>
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -136,11 +433,25 @@
 import $ from "jquery";
 import Pagination from "@/components/pages/Pagination.vue";
 export default {
+  props: {
+    option: {
+      type: Object,
+      default: function() {
+        return {
+          editFunction: true,
+          gopayPath: "/admin/orderCheckout/"
+        };
+      }
+    }
+  },
   data() {
     return {
       orders: [],
       tempOrder: {
         user: {}
+      },
+      status: {
+        loading: false
       },
       pagination: {}
     };
@@ -163,12 +474,17 @@ export default {
         // console.log(vm.pagination);
       });
     },
+    getPage(page = 1) {
+      const vm = this;
+      // $("html, body").scrollTop($("#position").offset().top);
+      vm.pagination.current_page = page;
+    },
     openModal(item) {
       this.tempOrder = Object.assign({}, item);
       //   console.log(this.tempOrder);
       $("#productModal").modal("show");
     },
-    updataOrder() {
+    updateOrder() {
       const vm = this;
       const api = `${process.env.APIPATH}/api/${
         process.env.CUSTOMPATH
@@ -198,3 +514,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+</style>

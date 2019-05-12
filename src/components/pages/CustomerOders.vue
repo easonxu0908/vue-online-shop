@@ -32,8 +32,8 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col-lg-2 col-md-3">
-          <div class="sticky-top" style="top:56px">
+        <div class="col-lg-2 col-md-3 mb-3">
+          <div class="sticky-top border rounded-lg" style="top:80px">
             <div class="list-group list-group-flush">
               <a
                 class="list-group-item list-group-item-action active"

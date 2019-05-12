@@ -1,7 +1,7 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <div class="card border-0 rounded shadow-sm">
+    <div class="productCard card border-0 rounded shadow-sm">
       <div
         class="card-img-top"
         style="height: 300px; background-size: cover; background-repeat: no-repeat; background-position: center"
@@ -106,5 +106,12 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.productCard {
+  transition: all 0.5s;
+}
+.productCard:hover {
+  transform: scale(1.01);
+  box-shadow: 1px 1px 10px black !important;
 }
 </style>

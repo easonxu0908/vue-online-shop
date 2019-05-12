@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm p-2">
       <a class="navbar-brand p-2" href="#">EASON</a>
       <button
         class="navbar-toggler"
@@ -39,7 +39,7 @@
     <a href="#" id="gotoTop" title="回到頂端">
       <i class="fas fa-arrow-alt-circle-up"></i>
     </a>
-    <router-view style="margin-top:60px"></router-view>
+    <router-view style="margin-top:70px"></router-view>
     <Footer/>
   </div>
 </template>

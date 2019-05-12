@@ -5,90 +5,104 @@
     <section class="row" v-if="isInform">
       <!-- 購物籃有商品 start -->
       <div class="col-md-8 col-10 mt-0 mt-md-5 mx-auto" v-if="cart.length !== 0">
-        <div class="card d-none d-md-block">
-          <div class="card-header" id="headingOne">
-            <h6 class="mb-0 d-flex align-items-center">
-              <a data-toggle="collapse" href="#collapseOne">
-                顯示購物車細節
-                <i class="fa fa-angle-down" aria-hidden="true"></i>
-              </a>
-              <span class="ml-auto mt-2 text-muted" style="font-size:0.8rem;">共 {{cart.length}}項</span>
-              <span class="h3 ml-2 mb-0">${{finalTotal}}</span>
-            </h6>
+        <div class="d-none d-md-block">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h6 class="d-flex align-items-center">
+                <a data-toggle="collapse" href="#collapseOne">
+                  顯示購物車細節
+                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </a>
+                <span class="ml-auto mt-2 text-muted" style="font-size:0.8rem;">共 {{cart.length}}項</span>
+                <span class="h3 ml-2 mb-0">${{finalTotal}}</span>
+              </h6>
+            </div>
+          </div>
+          <div id="collapseOne" class="collapse show mt-3">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th width="100"></th>
+                  <th>商品名稱</th>
+                  <th width="100" class="text-right">數量</th>
+                  <th width="100" class="text-right">單價</th>
+                  <th width="80" class="text-right">小計</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item,index) in cart" :key="index">
+                  <td class="align-middle">
+                    <div
+                      class="card"
+                      style="height: 100px; background-size: cover; background-repeat: no-repeat; background-position: center"
+                      :style="{backgroundImage:`url(${item.product.imageUrl})`}"
+                    ></div>
+                  </td>
+                  <td class="align-middle">
+                    <span v-if="item.coupon" class="badge badge-success">套用優惠卷</span>
+                    {{item.product.title}}
+                  </td>
+                  <td class="align-middle text-right">{{item.qty}} {{item.product.unit}}</td>
+                  <td class="align-middle text-right">{{item.product.price | currency}}</td>
+                  <td class="align-middle text-right">{{item.final_total | currency}}</td>
+                </tr>
+                <tr v-if="finalTotal == total">
+                  <td colspan="4" class="text-right font-weight-bold mt-1">結帳總金額</td>
+                  <td class="text-right font-weight-bold">
+                    <strong>{{total | currency}}</strong>
+                  </td>
+                </tr>
+                <tr v-if="finalTotal !== total" class="text-success">
+                  <td colspan="4" class="text-right font-weight-bold mt-1">折扣價</td>
+                  <td class="text-right font-weight-bold">
+                    <strong>{{finalTotal | currency}}</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <div id="collapseOne" class="collapse show mt-3">
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th width="100"></th>
-                <th>商品名稱</th>
-                <th width="100" class="text-right">數量</th>
-                <th width="100" class="text-right">單價</th>
-                <th width="80" class="text-right">小計</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item,index) in cart" :key="index">
-                <td class="align-middle">
-                  <div
-                    class="card"
-                    style="height: 100px; background-size: cover; background-repeat: no-repeat; background-position: center"
-                    :style="{backgroundImage:`url(${item.product.imageUrl})`}"
-                  ></div>
-                </td>
-
-                <td class="align-middle">
-                  <span v-if="item.coupon" class="badge badge-success">套用優惠卷</span>
-                  {{item.product.title}}
-                </td>
-                <td class="align-middle text-right">{{item.qty}} {{item.product.unit}}</td>
-                <td class="align-middle text-right">{{item.product.price | currency}}</td>
-                <td class="align-middle text-right">{{item.final_total | currency}}</td>
-              </tr>
-
-              <tr v-if="finalTotal == total">
-                <td colspan="4" class="text-right font-weight-bold mt-1">結帳總金額</td>
-                <td class="text-right font-weight-bold">
-                  <strong>{{total | currency}}</strong>
-                </td>
-              </tr>
-              <tr v-if="finalTotal !== total" class="text-success">
-                <td colspan="4" class="text-right font-weight-bold mt-1">折扣價</td>
-                <td class="text-right font-weight-bold">
-                  <strong>{{finalTotal | currency}}</strong>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
         <!-- 購物車細節mobile size start -->
-        <h5 class="d-block d-md-none py-3 mb-2 text-center bg-light">購物車細節</h5>
-        <table class="table table-sm d-table d-md-none">
-          <tbody>
-            <tr v-for="(item,index) in cart" :key="index">
-              <td class="align-middle" width="60">
-                <img :src="item.product.imageUrl" class="img-fluid img-thumbnail table-mobile-img">
-              </td>
-              <td class="align-middle" width="100">
-                {{item.product.title}}
-                <div class="text-muted" style="font-size:0.8rem">
-                  數量：{{item.qty}} {{item.product.unit}}
-                  <br>
-                  單價：{{item.product.price | currency}}
-                  <br>
-                  總價：{{item.final_total | currency}}
-                  <br>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="3" class="text-right font-weight-bold">
-                <strong>合計 &nbsp; ${{finalTotal}}</strong>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="d-block d-md-none col-12">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h6 class="mb-0 d-flex align-items-center justify-content-center">
+                <a data-toggle="collapse" href="#collapseMobile">
+                  收合購物車
+                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </a>
+              </h6>
+            </div>
+          </div>
+          <div id="collapseMobile" class="collapse show mt-1">
+            <table class="table table-sm">
+              <tbody>
+                <tr v-for="(item,index) in cart" :key="index">
+                  <td class="align-middle" width="60">
+                    <div
+                      class="card"
+                      style="height: 100px; background-size: cover; background-repeat: no-repeat; background-position: center"
+                      :style="{backgroundImage:`url(${item.product.imageUrl})`}"
+                    ></div>
+                  </td>
+                  <td class="align-middle" width="100">
+                    <span class="h5">{{item.product.title}}</span>
+                    <div class="mt-1">
+                      <tr class="text-muted">數量：{{item.qty}} {{item.product.unit}}</tr>
+                      <tr class="text-muted">單價：{{item.product.price | currency}}</tr>
+                      <tr class="text-muted">總價：{{item.final_total | currency}}</tr>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="text-right font-weight-bold">
+                    <strong>合計 &nbsp; ${{finalTotal}}</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
         <!-- 購物車細節mobile size end -->
 
         <h5 class="py-3 mt-5 mb-2 text-center bg-light">訂購人資訊</h5>

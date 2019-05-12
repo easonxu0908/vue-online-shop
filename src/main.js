@@ -10,10 +10,12 @@ import VeeValidate from 'vee-validate';
 import zhTWValidate from 'vee-validate/dist/locale/zh_TW';
 import VueI18n from 'vue-i18n'; Vue.use(VueI18n);
 
+// 引用自定義
 import App from './App';
 import router from './router';
 import './bus';
 import currencyFilter from './filters/currency';
+import timeTampsFilter from './filters/timetamps';
 
 axios.defaults.withCredentials = true;
 Vue.config.productionTip = false;
@@ -29,8 +31,10 @@ Vue.use(VeeValidate, {
   }
 });
 
+// 全域啟用元件 
 Vue.component('Loading', Loading);
 Vue.filter('currency', currencyFilter)
+Vue.filter('timeTamps', timeTampsFilter)
 
 /* eslint-disable no-new */
 new Vue({
