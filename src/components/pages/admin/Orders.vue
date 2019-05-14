@@ -1,51 +1,6 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <!-- <div>
-      <table class="table mt-4">
-        <thead>
-          <tr>
-            <th width="100">編號</th>
-            <th width="100">客戶姓名</th>
-            <th width="100">電話</th>
-            <th width="100">Email</th>
-            <th>住址</th>
-            <th width="120">總消費金額</th>
-            <th width="100">是否付款</th>
-            <th width="120">編輯</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item) in orders" :key="item.id">
-            <td>{{item.create_at}}</td>
-            <td>{{item.user.name}}</td>
-            <td>{{item.user.tel}}</td>
-            <td>{{item.user.email}}</td>
-            <td>{{item.user.address}}</td>
-            <td class="text-right">{{item.total | currency}}</td>
-            <td>
-              <span v-if="item.is_paid" class="text-success">付款</span>
-              <span v-else>未付款</span>
-            </td>
-            <td>
-              <div class="btn-group" role="group" aria-label="Basic example">
-                <button
-                  class="btn btn-main btn-block"
-                  @click="gopay(option.gopayPath,item.id)"
-                  v-if="!item.is_paid&&!option.editFunction"
-                >結帳</button>
-                <button
-                  class="btn btn-outline-primary btn-sm"
-                  @click="openModal(item)"
-                  v-if="option.editFunction"
-                >編輯</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>-->
-
     <div class="table-responsive my-3" v-if="orders.length != 0">
       <table class="table table-hover">
         <thead class="table-becare">
@@ -91,7 +46,6 @@
                     >{{((prod.product.price * prod.coupon.percent) / 100) | currency}}({{prod.coupon.title}})</span>
                     /{{prod.product.unit}}
                     <br>
-
                     <span
                       class="text-dark"
                       v-if="prod.final_total >= prod.total"
@@ -117,11 +71,6 @@
             <td>
               <button
                 class="btn btn-outline-primary btn-sm"
-                @click="gopay(option.gopayPath,item.id)"
-                v-if="!item.is_paid&&!option.editFunction"
-              >結帳</button>
-              <button
-                class="btn btn-outline-primary btn-sm"
                 @click="openModal(item)"
                 v-if="option.editFunction"
               >編輯</button>
@@ -140,216 +89,7 @@
     />
     <!-- 分頁 end-->
 
-    <!-- <div class="modal" id="productModal">
-      <div slot="modalHeader" class="modal-header bg-main text-white">
-        <h5 class="modal-title" id="exampleModalLabel">
-          <i class="fas fa-edit mr-1"></i>
-          <span>編輯訂單</span>
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" class="text-white">&times;</span>
-        </button>
-      </div>
-      <div slot="modalBody" class="modal-body">
-        <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a
-              class="nav-item nav-link font-weight-bold active"
-              id="nav-orderinfo-tab"
-              data-toggle="tab"
-              href="#nav-orderinfo"
-              role="tab"
-              aria-controls="nav-orderinfo"
-              aria-selected="true"
-            >訂購人資料</a>
-            <a
-              class="nav-item nav-link font-weight-bold"
-              id="nav-prodlist-tab"
-              data-toggle="tab"
-              href="#nav-prodlist"
-              role="tab"
-              aria-controls="nav-prodlist"
-              aria-selected="false"
-            >訂購清單</a>
-          </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-          <div
-            class="tab-pane fade show active pt-3"
-            id="nav-orderinfo"
-            role="tabpanel"
-            aria-labelledby="nav-orderinfo-tab"
-          >
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="orderName">*訂購人</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="orderName"
-                      name="Name"
-                      v-model="tempOrder.user.name"
-                      placeholder="請輸入姓名"
-                      v-validate="'required'"
-                      :class="{'is-invalid': errors.has('Name')}"
-                    >
-                    <span class="text-danger" v-if="errors.has('Name')">請輸入訂購人姓名</span>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="orderEmail">*信箱</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      :class="{'is-invalid': errors.has('email')}"
-                      name="email"
-                      id="orderEmail"
-                      v-model="tempOrder.user.email"
-                      placeholder="請輸入 Email"
-                      v-validate="'required|email'"
-                    >
-                    <span class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</span>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="orderAddress">*住址</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="orderAddress"
-                      name="address"
-                      :class="{'is-invalid': errors.has('address')}"
-                      v-model="tempOrder.user.address"
-                      placeholder="請輸入住址"
-                      v-validate="'required'"
-                    >
-                    <span class="text-danger" v-if="errors.has('address')">地址欄位不得留空</span>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="orderTel">*電話</label>
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="orderTel"
-                      name="regex"
-                      v-model="tempOrder.user.tel"
-                      v-validate="{ required: true, regex: /^([0-9]+)$/ }"
-                      placeholder="請輸入電話"
-                      :class="{'is-invalid': errors.has('regex')}"
-                    >
-                    <span class="text-danger" v-if="errors.has('regex')">僅接受純數字</span>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="textarea">備註</label>
-                  <textarea
-                    class="form-control"
-                    id="textarea"
-                    rows="3"
-                    v-model="tempOrder.message"
-                    placeholder="請輸入備註"
-                  ></textarea>
-                </div>
-                <div class="form-group">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="is_paid"
-                      v-model="tempOrder.is_paid"
-                    >
-                    <label class="form-check-label" for="is_paid">是否付款</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="tab-pane fade pt-3"
-            id="nav-prodlist"
-            role="tabpanel"
-            aria-labelledby="nav-prodlist-tab"
-          >
-            <div class="row">
-              <div class="col-md-12">
-                <div
-                  class="form-row"
-                  v-for="(item,key, index) in tempOrder.products"
-                  :key="item.id"
-                >
-                  <div class="form-group col-md-9">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span
-                          class="input-group-text bg-main text-white"
-                          id="basic-addon1"
-                        >產品項目 {{index +1}}</span>
-                      </div>
-                      <input
-                        type="text"
-                        class="form-control"
-                        aria-label="prodName"
-                        style="cursor:default;"
-                        readonly
-                        v-model="item.product.title"
-                      >
-                    </div>
-                    <p v-if="item.coupon" class="text-danger font-weight-bold mb-0">
-                      <span>*套用{{item.coupon.title}} 中 -</span>
-                      <span>{{(item.product.price * item.coupon.percent) / 100 | currency}} 1/套</span>
-                    </p>
-                    <p v-else class="text-dontcare mb-0">
-                      <span>未套用酷碰優惠 -</span>
-                      <span>{{item.product.price | currency}} 1/{{item.product.unit}}</span>
-                    </p>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-main text-white" id="basic-addon1">*數量</span>
-                      </div>
-                      <input
-                        type="number"
-                        class="form-control"
-                        aria-label="num"
-                        v-model="item.qty"
-                        :name="`num${index}`"
-                        v-validate="{ required: true, regex: /^([0-9]+)$/ }"
-                        placeholder="請輸入數量"
-                        :class="{'is-invalid': errors.has('num' + index)}"
-                      >
-                    </div>
-                    <p class="mb-0 text-dontcare text-right">
-                      <span
-                        v-if="item.coupon"
-                      >小計 {{((item.product.price * item.coupon.percent) / 100) * item.qty | currency}}</span>
-                      <span v-else>小計 {{(item.product.price * item.qty) | currency}}</span>
-                    </p>
-                  </div>
-                </div>
-                <div class="text-right text-danger font-weight-bold">總計</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div slot="modalFooter" class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary border-0" data-dismiss="modal">取消</button>
-        <button
-          type="button"
-          class="btn btn-becare text-main"
-          @click="updateOrder"
-          :disabled="status.loading"
-        >
-          <i class="fas fa-spinner fa-spin mr-1" v-if="status.loading"></i>確認
-        </button>
-      </div>
-    </div>-->
-
-    <!-- 修改訂單 -->
-
+    <!-- 修改訂單 start-->
     <div
       class="modal fade"
       id="productModal"
@@ -548,7 +288,6 @@
                           <span
                             v-if="item.coupon"
                           >小計 {{((item.product.price * item.coupon.percent) / 100) * item.qty | currency}}</span>
-
                           <span v-else>小計 {{(item.product.price * item.qty) | currency}}</span>
                         </p>
                       </div>
@@ -558,68 +297,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="modal-body">
-            <div class="row">
-              <div class="col">
-                <p>訂單編號: {{tempOrder.create_at}}</p>
-                <div class="form-group">
-                  <label for="title">客戶姓名</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="tempOrder.user.name"
-                    id="title"
-                    placeholder="請輸入客戶姓名"
-                  >
-                </div>
-                <div class="form-group">
-                  <label for="title">電話</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="title"
-                    v-model="tempOrder.user.tel"
-                    placeholder="請輸入電話"
-                  >
-                </div>
-                <div class="form-group">
-                  <label for="title">Email</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="title"
-                    v-model="tempOrder.user.email"
-                    placeholder="請輸入Email"
-                  >
-                </div>
-                <div class="form-group">
-                  <label for="title">總消費金額</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="tempOrder.total"
-                    id="title"
-                    placeholder="請輸入標題"
-                  >
-                </div>
-                <div class="form-group">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="is_enabled"
-                      v-model="tempOrder.is_paid"
-                      :true-value="1"
-                      :false-value="0"
-                    >
-                    <label class="form-check-label" for="is_enabled">是否付款</label>
-                    <span v-if="tempOrder.is_paid" class="badge badge-success">已付款</span>
-                    <span v-else class="badge badge-danger">未付款</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>-->
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
             <button type="button" class="btn btn-primary" @click="updateOrder">確認</button>
@@ -627,6 +304,7 @@
         </div>
       </div>
     </div>
+    <!-- 修改訂單 start-->
   </div>
 </template>
 
@@ -651,6 +329,7 @@ export default {
       tempOrder: {
         user: {}
       },
+      isLoading: false,
       status: {
         loading: false
       },
@@ -686,25 +365,6 @@ export default {
       //   console.log(this.tempOrder);
       $("#productModal").modal("show");
     },
-    // updateOrder() {
-    //   const vm = this;
-    //   const api = `${process.env.APIPATH}/api/${
-    //     process.env.CUSTOMPATH
-    //   }/admin/order/${vm.tempOrder.id}`;
-    //   console.log(this.tempOrder);
-    //   this.$http.put(api, { data: vm.tempOrder }).then(response => {
-    //     // console.log(response.data);
-    //     if (response.data.success) {
-    //       $("#productModal").modal("hide");
-    //       vm.getOrders();
-    //       // console.log("修改成功");
-    //     } else {
-    //       $("#productModal").modal("hide");
-    //       vm.getOrders();
-    //       // console.log("修改失敗");
-    //     }
-    //   });
-    // },
     updateOrder() {
       const vm = this;
       const api = `${process.env.APIPATH}/api/${
@@ -749,12 +409,6 @@ export default {
           vm.$bus.$emit("message:push", `噢！表單內有欄位空白唷`, "danger");
         }
       });
-    },
-    gopay(path, orderID) {
-      // const vm = this;
-      // console.log(orderID);
-      this.$router.push(`${path}${orderID}`);
-      // this.$router.push(`/checkoutPay/${orderID}`);
     }
   },
   created() {

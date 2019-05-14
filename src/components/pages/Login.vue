@@ -1,7 +1,7 @@
 <template>
   <div>
     <form class="form-signin" @submit.prevent="signin">
-      <h1 class="h3 mb-3 text-center font-weight-normal">後台管理</h1>
+      <h6 class="h3 mb-3 text-center font-weight-normal">後台管理</h6>
       <label for="inputEmail" class="sr-only">Email address</label>
       <input
         type="email"
@@ -34,7 +34,6 @@
 
 <script>
 export default {
-  name: "後台管理",
   data() {
     return {
       user: {
