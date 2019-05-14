@@ -284,6 +284,7 @@ export default {
               vm.getOrderInfo();
               this.$emit("step", (this.currentStep = "pay"));
               this.$bus.$emit("cart:update");
+              this.$router.push(`/checkoutPay/${vm.orderID}`);
             } else {
               vm.isLoading = false;
               if (response.message) {
@@ -312,35 +313,35 @@ export default {
           vm.orderTotal = response.data.order.total;
         }
       });
-    },
-    pay() {
-      let vm = this;
-      this.$validator.validate().then(result => {
-        if (result) {
-          const payApi = `${process.env.APIPATH}/api/${
-            process.env.CUSTOMPATH
-          }/pay/${vm.orderID}`;
-          vm.$http.post(payApi).then(response => {
-            if (response.data.success) {
-              console.log(response);
-              this.$emit("step", (this.currentStep = "finish"));
-              this.$router.push(`/finish/${vm.orderID}`);
-            } else {
-              alert("付款失敗");
-              // console.log(response);
-            }
-          });
-        } else {
-          alert("資料有誤");
-          // console.log("資料有誤")
-        }
-      });
     }
+    // pay() {
+    //   let vm = this;
+    //   this.$validator.validate().then(result => {
+    //     if (result) {
+    //       const payApi = `${process.env.APIPATH}/api/${
+    //         process.env.CUSTOMPATH
+    //       }/pay/${vm.orderID}`;
+    //       vm.$http.post(payApi).then(response => {
+    //         if (response.data.success) {
+    //           console.log(response);
+    //           this.$emit("step", (this.currentStep = "finish"));
+    //           this.$router.push(`/finish/${vm.orderID}`);
+    //         } else {
+    //           alert("付款失敗");
+    //           // console.log(response);
+    //         }
+    //       });
+    //     } else {
+    //       alert("資料有誤");
+    //       // console.log("資料有誤")
+    //     }
+    //   });
+    // }
   },
   created() {
     this.getCartList();
     this.$emit("step", (this.currentStep = "info"));
-    $(".navbar-nav").css("marginRight", "0px");
+    // $(".navbar-nav").css("marginRight", "0px");
   }
 };
 </script>

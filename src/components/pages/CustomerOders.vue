@@ -8,7 +8,7 @@
     </div>
     <!-- 選購區 start-->
     <div class="container">
-      <p class="text-center h3 mb-3">購物專區</p>
+      <p class="text-center font-weight-bold h3 mb-3">購物專區</p>
       <div class="row justify-content-end">
         <div class="col-md-8 col-lg-4">
           <div class="input-group mb-3">

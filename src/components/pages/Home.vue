@@ -17,7 +17,12 @@
         <ul class="navbar-nav">
           <li class="nav-item active">
             <router-link to="/">
-              <a class="nav-link" href="#">Home</a>
+              <a class="nav-link" href="#">商品區</a>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/myOrders">
+              <a class="nav-link" href="#">我的訂單</a>
             </router-link>
           </li>
           <li class="nav-item">
@@ -25,15 +30,14 @@
               <a class="nav-link" href="#">訂單查詢</a>
             </router-link>
           </li>
-          <li class="nav-item">
-            <router-link to="/login" class="d-md-inline-block">
-              <a class="nav-link" href="#">管理者登入</a>
-            </router-link>
-          </li>
         </ul>
       </div>
-      <router-link class="d-inline-block mr-4 ml-3 mt-1" to="/cart">
+      <router-link class="nav-link" to="/cart">
         <CartIcon/>
+      </router-link>
+      <router-link to="/login" class="nav-link">
+        <i class="fas fa-user fa-2x text-dark"></i>
+        <span class="sr-only">後台登入</span>
       </router-link>
     </nav>
     <a href="#" id="gotoTop" title="回到頂端">

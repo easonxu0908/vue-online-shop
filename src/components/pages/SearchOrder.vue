@@ -5,7 +5,7 @@
      
     </div>-->
 
-    <div class="container main-contant py-3 mt-5">
+    <div class="container py-3 mt-5">
       <h5 class="py-3 mb-2 text-center font-weight-bold">查詢訂單</h5>
       <!-- search start-->
       <div class="form-group d-flex justify-content-center align-items-center ml-auto mr-auto">

@@ -1,6 +1,7 @@
+// 官方必須元件
 import Vue from 'vue';
 import Router from 'vue-router';
-
+// 自定
 import Dashboard from '@/components/Dashboard';
 import Login from '@/components/pages/Login';
 import Home from '@/components/pages/Home';
@@ -9,9 +10,11 @@ import CustomerOders from '@/components/pages/CustomerOders';
 import CardDetail from '@/components/pages/CardDetail';
 import Checkout from '@/components/pages/Checkout';
 import CheckoutInfo from '@/components/pages/CheckoutInfo';
+import CheckoutPay from '@/components/pages/CheckoutPay';
 import CheckoutFinish from '@/components/pages/CheckoutFinish';
 import Orders from '@/components/pages/admin/Orders';
 import SearchOrder from '@/components/pages/SearchOrder';
+import MyOrders from '@/components/pages/MyOrders';
 import Cart from '@/components/pages/Cart';
 import Coupon from '@/components/pages/admin/Coupon';
 
@@ -44,6 +47,11 @@ export default new Router({
           component: SearchOrder,
         },
         {
+          path: '/myOrders',
+          name: 'MyOrders',
+          component: MyOrders,
+        },
+        {
           path: '/cart',
           name: 'Cart',
           component: Cart,
@@ -59,21 +67,26 @@ export default new Router({
               component: CheckoutInfo,
             },
             {
-              path: '/finish/:id',
-              name: 'CheckoutFinish',
-              component: CheckoutFinish,
-              beforeEnter: (to, from, next) => {
-                console.log(to, from, next);
-                if (from.name != "CheckoutInfo") {
-                  next({
-                    path: '/checkout',
-                  })
-                }
-                else {
-                  next();
-                }
-              }
+              path: '/checkoutPay/:orderID',
+              name: 'CheckoutPay',
+              component: CheckoutPay,
             }
+            // {
+            //   path: '/finish/:id',
+            //   name: 'CheckoutFinish',
+            //   component: CheckoutFinish,
+            //   beforeEnter: (to, from, next) => {
+            //     console.log(to, from, next);
+            //     if (from.name != "CheckoutInfo") {
+            //       next({
+            //         path: '/checkout',
+            //       })
+            //     }
+            //     else {
+            //       next();
+            //     }
+            //   }
+            // }
           ]
         },
       ],

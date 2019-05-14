@@ -1,7 +1,7 @@
 <template>
   <div>
     <form class="form-signin" @submit.prevent="signin">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <h1 class="h3 mb-3 text-center font-weight-normal">後台管理</h1>
       <label for="inputEmail" class="sr-only">Email address</label>
       <input
         type="email"
@@ -26,7 +26,7 @@
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">登入</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>
   </div>
@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "後台管理",
   data() {
     return {
       user: {
@@ -48,7 +48,7 @@ export default {
       const api = `${process.env.APIPATH}/admin/signin`;
       const vm = this;
       this.$http.post(api, vm.user).then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.success) {
           vm.$router.push("/admin/products");
         }
