@@ -46,9 +46,14 @@
         </div>
       </div>
     </div>
+    <div class="col-md-12" v-if="product.id">
+      <h3 class="my-3 text-center">同類別商品</h3>
+      <prodSilder :prod-category="product.category"></prodSilder>
+    </div>
   </div>
 </template>
 <script>
+import prodSilder from "@/components/prodsilder";
 export default {
   data() {
     return {
@@ -59,6 +64,9 @@ export default {
       },
       isLoading: false
     };
+  },
+  components: {
+    prodSilder
   },
   methods: {
     getProduct(id) {

@@ -1,14 +1,11 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <div class="jumbotron jumbotron-fluid jumbotron-bg d-flex align-items-end jumbotron-img mt-5">
-      <div class="container">
-        <div class="p-3 bg-lighter"></div>
-      </div>
-    </div>
+    <!-- <div class="jumbotron jumbotron-fluid align-items-end jumbotron-img mt-5"></div> -->
+    <BannerCarousel></BannerCarousel>
     <!-- 選購區 start-->
     <div class="container">
-      <p class="text-center font-weight-bold h3 mb-3">購物專區</p>
+      <p class="text-center font-weight-bold h3 my-3">購物專區</p>
       <div class="row justify-content-end">
         <div class="col-md-8 col-lg-4">
           <div class="input-group mb-3">
@@ -57,19 +54,25 @@
                 href="#"
                 class="list-group-item list-group-item-action"
                 data-toggle="list"
-                @click.prevent="changeTab('甜點')"
-              >甜點</a>
+                @click.prevent="changeTab('帽子')"
+              >帽子</a>
+              <a
+                href="#"
+                class="list-group-item list-group-item-action"
+                data-toggle="list"
+                @click.prevent="changeTab('服飾')"
+              >服飾</a>
             </div>
           </div>
         </div>
-        <div class="col-lg-10 col-md-9">
+        <div class="col-lg-10 col-md-9 d-none d-sm-block">
           <div
             v-if="(searchFilter || searchResult.length) && searchResult.length == 0"
             class="alert alert-secondary h-100 d-flex justify-content-center align-items-center"
           >Sorry,依您的關鍵字「{{searchFilter}}」搜尋不到產品呢...</div>
           <template v-else>
             <div class="row">
-              <div v-for="(item,key) in filterPager" class="col-lg-4 col-md-6 mb-4" :key="key">
+              <div v-for="(item,key) in filterPager" class="col-lg-4 col-sm-6 mb-4" :key="key">
                 <CustomerOrdersCard :item="item" :status="status"/>
               </div>
             </div>
@@ -83,6 +86,18 @@
             <!-- 分頁 -->
           </template>
         </div>
+        <div class="col d-sm-none">
+          <div
+            v-if="(searchFilter || searchResult.length) && searchResult.length == 0"
+            class="alert alert-warning"
+          >Sorry,依您的關鍵字「{{searchFilter}}」搜尋不到產品呢...</div>
+          <prodSilder
+            :prod-category="prodCategory"
+            :search-result="searchResult"
+            :search-filter="searchFilter"
+            v-else
+          ></prodSilder>
+        </div>
       </div>
       <!-- 選購區 end-->
     </div>
@@ -92,6 +107,8 @@
 import $ from "jquery";
 import Pagination from "@/components/pages/Pagination.vue";
 import CustomerOrdersCard from "@/components/pages/CustomerOrdersCard.vue";
+import BannerCarousel from "@/components/BannerCarousel";
+import prodSilder from "@/components/prodsilder";
 
 export default {
   data() {
@@ -116,7 +133,9 @@ export default {
   },
   components: {
     Pagination,
-    CustomerOrdersCard
+    CustomerOrdersCard,
+    BannerCarousel,
+    prodSilder
   },
   methods: {
     getAllProducts() {

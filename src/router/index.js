@@ -5,13 +5,13 @@ import Router from 'vue-router';
 import Dashboard from '@/components/Dashboard';
 import Login from '@/components/pages/Login';
 import Home from '@/components/pages/Home';
+import Index from '@/components/pages/Index';
 import Products from '@/components/pages/admin/Products';
 import CustomerOders from '@/components/pages/CustomerOders';
 import CardDetail from '@/components/pages/CardDetail';
 import Checkout from '@/components/pages/Checkout';
 import CheckoutInfo from '@/components/pages/CheckoutInfo';
 import CheckoutPay from '@/components/pages/CheckoutPay';
-import CheckoutFinish from '@/components/pages/CheckoutFinish';
 import Orders from '@/components/pages/admin/Orders';
 import SearchOrder from '@/components/pages/SearchOrder';
 import MyOrders from '@/components/pages/MyOrders';
@@ -33,6 +33,11 @@ export default new Router({
       children: [
         {
           path: '/',
+          name: 'Index',
+          component: Index,
+        },
+        {
+          path: '/customerOders',
           name: 'CustomerOders',
           component: CustomerOders,
         },
@@ -71,22 +76,6 @@ export default new Router({
               name: 'CheckoutPay',
               component: CheckoutPay,
             }
-            // {
-            //   path: '/finish/:id',
-            //   name: 'CheckoutFinish',
-            //   component: CheckoutFinish,
-            //   beforeEnter: (to, from, next) => {
-            //     console.log(to, from, next);
-            //     if (from.name != "CheckoutInfo") {
-            //       next({
-            //         path: '/checkout',
-            //       })
-            //     }
-            //     else {
-            //       next();
-            //     }
-            //   }
-            // }
           ]
         },
       ],

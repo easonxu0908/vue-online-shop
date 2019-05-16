@@ -8,7 +8,7 @@
         :style="{backgroundImage:`url(${item.imageUrl})`}"
       ></div>
       <div class="card-body">
-        <span class="badge badge-primary float-right ml-2">{{item.category}}</span>
+        <span class="badge badge-primary float-right">{{item.category}}</span>
         <h5 class="card-title">
           <span class="text-dark productTitle">{{item.title}}</span>
         </h5>
@@ -99,10 +99,6 @@ export default {
   white-space: nowrap;
 }
 .productContent {
-  /* display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden; */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

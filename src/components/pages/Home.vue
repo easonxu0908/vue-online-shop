@@ -17,6 +17,11 @@
         <ul class="navbar-nav">
           <li class="nav-item active">
             <router-link to="/">
+              <a class="nav-link" href="#">首頁</a>
+            </router-link>
+          </li>
+          <li class="nav-item active">
+            <router-link to="/customerOders">
               <a class="nav-link" href="#">商品區</a>
             </router-link>
           </li>
