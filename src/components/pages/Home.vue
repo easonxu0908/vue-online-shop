@@ -16,31 +16,31 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <router-link to="/">
-              <a class="nav-link" href="#">首頁</a>
+            <router-link to="/index">
+              <a class="nav-link bottomLine" href="#">首頁</a>
             </router-link>
           </li>
           <li class="nav-item active">
             <router-link to="/customerOders">
-              <a class="nav-link" href="#">商品區</a>
+              <a class="nav-link bottomLine" href="#">商品區</a>
             </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/myOrders">
-              <a class="nav-link" href="#">我的訂單</a>
+              <a class="nav-link bottomLine" href="#">我的訂單</a>
             </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/searchOrder">
-              <a class="nav-link" href="#">訂單查詢</a>
+              <a class="nav-link bottomLine" href="#">訂單查詢</a>
             </router-link>
           </li>
         </ul>
       </div>
-      <router-link class="nav-link" to="/cart">
+      <router-link class="nav-link focus" to="/cart">
         <CartIcon/>
       </router-link>
-      <router-link to="/login" class="nav-link">
+      <router-link to="/login" class="nav-link focus">
         <i class="fas fa-user fa-2x text-dark"></i>
         <span class="sr-only">後台登入</span>
       </router-link>
@@ -104,6 +104,19 @@ export default {
 <style scoped>
 body {
   font-family: 微軟正黑體;
+}
+
+a:hover {
+  text-decoration-line: none;
+}
+.focus {
+  transition: all 0.2s;
+}
+.focus:hover {
+  transform: scale(1.1);
+}
+.bottomLine:hover {
+  border-bottom: 2px solid gray;
 }
 #gotoTop {
   display: none;

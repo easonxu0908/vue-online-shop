@@ -21,48 +21,57 @@ import Coupon from '@/components/pages/admin/Coupon';
 Vue.use(Router)
 
 export default new Router({
+  // 切換路由時回到畫面頂部
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes: [
     {
       path: '*',
-      redirect: '/login',
+      redirect: '/',
     },
     {
       path: '/',
-      name: 'Home',
+      redirect: '/index',
       component: Home,
       children: [
         {
-          path: '/',
+          path: 'index',
           name: 'Index',
           component: Index,
         },
         {
-          path: '/customerOders',
+          path: 'customerOders',
           name: 'CustomerOders',
           component: CustomerOders,
         },
         {
-          path: '/cardDetail/:prodId',
+          path: 'cardDetail/:prodId',
           name: 'CardDetail',
           component: CardDetail,
         },
         {
-          path: '/searchOrder',
+          path: 'searchOrder',
           name: 'SearchOrder',
           component: SearchOrder,
         },
         {
-          path: '/myOrders',
+          path: 'myOrders',
           name: 'MyOrders',
           component: MyOrders,
         },
         {
-          path: '/cart',
+          path: 'cart',
           name: 'Cart',
           component: Cart,
         },
         {
           path: '/',
+          redirect: '/checkout',
           name: 'Checkout',
           component: Checkout,
           children: [
