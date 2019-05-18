@@ -9,25 +9,6 @@
         </h3>
         <h3 class="text-center" v-if="!order.is_paid">確認付款</h3>
         <h5 class="py-3 mt-4 mt-md-5 mb-2 text-center bg-light">訂單資訊</h5>
-        <div class="text-center font-weight-bold">
-          訂單編號：
-          <span
-            class="orderID position-relative"
-            :data-clipboard-text="orderID"
-            type="text"
-            @click.prevent="copy()"
-          >{{orderID}}</span>
-          <span
-            class="copy font-weight-light text-muted ml-1 mt-1 position-absolute d-md-inline d-none"
-            style="font-size:13px"
-          >{{copyStatus}}</span>
-          <br>
-          <span
-            class="copy font-weight-light text-muted mt-1 d-md-none d-block"
-            style="font-size:13px"
-          >{{copyStatus}}</span>
-        </div>
-
         <div class="mt-2 text-info font-weight-bold pt-3" style="border-top:1px solid #64eaa9">
           <i class="far fa-user mr-1"></i> 訂購人
         </div>
@@ -119,20 +100,6 @@ export default {
         }
       });
     },
-    copy() {
-      var clipboard = new Clipboard(".orderID");
-      this.copyStatus = "可複製";
-      clipboard.on("success", e => {
-        this.copyStatus = "已複製";
-        clipboard.destroy();
-      });
-      clipboard.on("error", e => {
-        // 不支持複製
-        alert("該瀏覽器不支持自動複製");
-        // 釋放內存
-        clipboard.destroy();
-      });
-    },
     pay() {
       let vm = this;
       this.$validator.validate().then(result => {
@@ -166,15 +133,4 @@ export default {
 };
 </script>
 
-<style>
-table a:hover {
-  text-decoration: none;
-}
-.table-mobile-img {
-  width: 100%;
-  max-width: 120px;
-  height: 80px;
-  background-size: cover;
-  background-position: center;
-}
-</style>
+

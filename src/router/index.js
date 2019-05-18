@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 // 自定
-import Dashboard from '@/components/Dashboard';
+import Dashboard from '@/components/pages/admin/Dashboard';
 import Login from '@/components/pages/Login';
 import Home from '@/components/pages/Home';
 import Index from '@/components/pages/Index';
@@ -13,7 +13,6 @@ import Checkout from '@/components/pages/Checkout';
 import CheckoutInfo from '@/components/pages/CheckoutInfo';
 import CheckoutPay from '@/components/pages/CheckoutPay';
 import Orders from '@/components/pages/admin/Orders';
-import SearchOrder from '@/components/pages/SearchOrder';
 import MyOrders from '@/components/pages/MyOrders';
 import Cart from '@/components/pages/Cart';
 import Coupon from '@/components/pages/admin/Coupon';
@@ -36,47 +35,40 @@ export default new Router({
     },
     {
       path: '/',
-      redirect: '/index',
       component: Home,
       children: [
         {
-          path: 'index',
+          path: '/',
           name: 'Index',
           component: Index,
         },
         {
-          path: 'customerOders',
+          path: '/customerOders',
           name: 'CustomerOders',
           component: CustomerOders,
         },
         {
-          path: 'cardDetail/:prodId',
+          path: '/cardDetail/:prodId',
           name: 'CardDetail',
           component: CardDetail,
         },
         {
-          path: 'searchOrder',
-          name: 'SearchOrder',
-          component: SearchOrder,
-        },
-        {
-          path: 'myOrders',
+          path: '/myOrders',
           name: 'MyOrders',
           component: MyOrders,
         },
         {
-          path: 'cart',
+          path: '/cart',
           name: 'Cart',
           component: Cart,
         },
         {
-          path: '/',
-          redirect: '/checkout',
+          path: '/checkout',
           name: 'Checkout',
           component: Checkout,
           children: [
             {
-              path: '/checkout',
+              path: '/',
               name: 'CheckoutInfo',
               component: CheckoutInfo,
             },

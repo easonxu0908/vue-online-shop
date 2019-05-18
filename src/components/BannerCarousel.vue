@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
+    <div
+      id="carouselExampleControls"
+      class="carousel slide carousel-fade d-none d-md-block"
+      data-ride="carousel"
+    >
       <div class="carousel-inner">
         <div class="carousel-item active">
           <div class="jumbotron-img" id="jumbotron-img"></div>
@@ -50,6 +54,11 @@ export default {
       interval: true
     });
   }
+  // updated() {
+  //   $(".carousel").carousel({
+  //     interval: true
+  //   });
+  // }
 };
 </script>
 

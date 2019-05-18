@@ -1,10 +1,10 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <!-- <div class="jumbotron jumbotron-fluid align-items-end jumbotron-img mt-5"></div> -->
-    <BannerCarousel></BannerCarousel>
+    <topSilder></topSilder>
+    <!-- <BannerCarousel></BannerCarousel> -->
     <!-- 選購區 start-->
-    <div class="container">
+    <div class="container" id="position">
       <p class="text-center font-weight-bold h3 my-3">購物專區</p>
       <div class="row justify-content-end">
         <div class="col-md-8 col-lg-4">
@@ -30,7 +30,7 @@
       </div>
       <div class="row mt-4">
         <div class="col-lg-2 col-md-3 mb-3">
-          <div class="sticky-top border rounded-lg" style="top:80px">
+          <div class="sticky-top border rounded-lg" style="top:20px">
             <div class="list-group list-group-flush">
               <a
                 class="list-group-item list-group-item-action active"
@@ -105,10 +105,11 @@
 </template>
 <script>
 import $ from "jquery";
-import Pagination from "@/components/pages/Pagination.vue";
+import Pagination from "@/components/Pagination.vue";
 import CustomerOrdersCard from "@/components/pages/CustomerOrdersCard.vue";
 import BannerCarousel from "@/components/BannerCarousel";
 import prodSilder from "@/components/prodsilder";
+import topSilder from "@/components/topsilder";
 
 export default {
   data() {
@@ -135,7 +136,8 @@ export default {
     Pagination,
     CustomerOrdersCard,
     BannerCarousel,
-    prodSilder
+    prodSilder,
+    topSilder
   },
   methods: {
     getAllProducts() {
@@ -146,13 +148,13 @@ export default {
       vm.isLoading = true;
       this.$http.get(api).then(response => {
         vm.allProducts = response.data.products;
-        console.log(vm.allProducts);
+        // console.log(vm.allProducts);
         vm.isLoading = false;
       });
     },
     getPage(page = 1) {
       const vm = this;
-      // $("html, body").scrollTop($("#position").offset().top);
+      $("html, body").scrollTop($("#position").offset().top);
       vm.pagination.current_page = page;
     },
     searchProducts() {
@@ -180,7 +182,15 @@ export default {
   },
   created() {
     this.getAllProducts();
+    $(".carousel").carousel({
+      interval: true
+    });
   },
+  // updated() {
+  //   $(".carousel").carousel({
+  //     interval: true
+  //   });
+  // },
   computed: {
     filterProducts() {
       const vm = this;
@@ -215,13 +225,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.jumbotron-img {
-  background-image: url("../../../image/david-lezcano-225889-unsplash.jpg");
-  background-repeat: no-repeat;
-  background-position: 10% 50%;
-  background-size: cover;
-  height: 250px;
-}
-</style>

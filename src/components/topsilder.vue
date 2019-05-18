@@ -1,12 +1,14 @@
 <template>
-  <div class="container mb-3">
+  <div class="container-fluid mb-3 d-none d-md-block">
     <swiper :options="swiperOption" class="topSwiper">
-      <swiper-slide v-for="(item, index) in sliderImg" :key="index">
-        <div
-          class="slide"
-          :style="`background-image: url('${item.imgPath}');`"
-          :title="`${item.info}`"
-        ></div>
+      <swiper-slide>
+        <div class="slide slide1"></div>
+      </swiper-slide>
+      <swiper-slide>
+        <div class="slide slide2"></div>
+      </swiper-slide>
+      <swiper-slide>
+        <div class="slide slide3"></div>
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
@@ -24,8 +26,7 @@ export default {
       swiperOption: {
         loop: true,
         spaceBetween: 30,
-        centeredSlides: true,
-        grabCursor: true,
+        effect: "fade",
         autoplay: {
           delay: 10000,
           disableOnInteraction: false
@@ -34,21 +35,7 @@ export default {
           el: ".swiper-pagination",
           clickable: true
         }
-      },
-      sliderImg: [
-        {
-          imgPath: "static/silderImg/Call-of-Duty-Black-Ops-3-Logo.jpg",
-          info: "決勝時刻：黑色行動III Call of Duty Black Ops III"
-        },
-        {
-          imgPath: "static/silderImg/mariorabbids-kingdom-battle.jpg",
-          info: "瑪利歐+瘋狂兔子 王國之戰 - Mario Rabbids KINDOM BATTLE"
-        },
-        {
-          imgPath: "static/silderImg/Dragon-Quest-VII-3DS.jpg",
-          info: "勇者鬥惡龍VII 伊甸的戰士們 - Dragon Quest VII"
-        }
-      ]
+      }
     };
   },
   components: {
@@ -77,5 +64,14 @@ export default {
   height: 100%;
   background-position: center center;
   background-size: cover;
+}
+.slide1 {
+  background-image: url("../assets/image/david-lezcano-225889-unsplash.jpg");
+}
+.slide2 {
+  background-image: url("../assets/image/clark-street-mercantile-33919-unsplash.jpg");
+}
+.slide3 {
+  background-image: url("../assets/image/clark-street-mercantile-33931-unsplash.jpg");
 }
 </style>

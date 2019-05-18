@@ -1,9 +1,13 @@
 <template>
   <div>
-    <BannerCarousel></BannerCarousel>
+    <topSilder></topSilder>
+    <!-- <BannerCarousel></BannerCarousel> -->
     <div class="container py-3">
-      <h1 class="page_title">關於這個網站</h1>
-      <p class="text-justify p-3 px-md-5">這是一個練習 Vue 的作品</p>
+      <h5 class="h1">關於這個網站</h5>
+      <p class>這是一個練習 Vue 的作品，請各位前輩多多指教。</p>
+      <p class>
+        <span class="badge badge-success">85折優惠券</span> code85
+      </p>
       <h2 class="text-center">本期熱銷商品</h2>
       <prodSilder></prodSilder>
     </div>
@@ -11,13 +15,26 @@
 </template>
 
 <script>
+import $ from "jquery";
 import prodSilder from "@/components/prodsilder";
 import BannerCarousel from "@/components/BannerCarousel";
+import topSilder from "@/components/topsilder";
 
 export default {
   components: {
     prodSilder,
-    BannerCarousel
+    BannerCarousel,
+    topSilder
+  },
+  // updated() {
+  //   $(".carousel").carousel({
+  //     interval: true
+  //   });
+  // }
+  created() {
+    $(".carousel").carousel({
+      interval: true
+    });
   }
 };
 </script>

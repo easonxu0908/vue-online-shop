@@ -57,10 +57,10 @@ export default {
   },
   methods: {
     getOrderID(id) {
-      console.log(id);
+      // console.log(id);
       let vm = this;
       vm.orderId = id;
-      console.log(vm.orderId);
+      // console.log(vm.orderId);
     }
   },
   created() {}

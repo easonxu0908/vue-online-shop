@@ -1,7 +1,7 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <div class="container py-3 mt-5">
+    <div class="container py-3">
       <div class="table-responsive my-3" v-if="orders.length != 0">
         <table class="table table-hover">
           <thead class="table-becare">
@@ -97,7 +97,7 @@
 
 <script>
 import $ from "jquery";
-import Pagination from "@/components/pages/Pagination.vue";
+import Pagination from "@/components/Pagination.vue";
 export default {
   components: {
     Pagination
