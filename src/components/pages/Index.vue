@@ -1,7 +1,7 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <topSilder></topSilder>
-
     <div class="container py-3">
       <h5 class="h1">關於這個網站</h5>
       <p class>這是一個練習 Vue 的作品，請各位前輩多多指教。</p>
@@ -17,20 +17,25 @@
 <script>
 import $ from "jquery";
 import prodSilder from "@/components/prodsilder";
-
 import topSilder from "@/components/topsilder";
 
 export default {
   components: {
     prodSilder,
-
     topSilder
   },
-
+  data() {
+    return {
+      isLoading: false
+    };
+  },
   created() {
-    $(".carousel").carousel({
-      interval: true
-    });
+    const vm = this;
+    vm.isLoading = true;
+  },
+  mounted() {
+    const vm = this;
+    vm.isLoading = false;
   }
 };
 </script>

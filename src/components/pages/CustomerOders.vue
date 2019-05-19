@@ -168,6 +168,7 @@ export default {
     },
     getPage(page = 1) {
       const vm = this;
+      //點擊分頁跳回頁首
       $("html, body").scrollTop($("#position").offset().top);
       vm.pagination.current_page = page;
     },
@@ -196,15 +197,7 @@ export default {
   },
   created() {
     this.getAllProducts();
-    $(".carousel").carousel({
-      interval: true
-    });
   },
-  // updated() {
-  //   $(".carousel").carousel({
-  //     interval: true
-  //   });
-  // },
   computed: {
     filterProducts() {
       const vm = this;

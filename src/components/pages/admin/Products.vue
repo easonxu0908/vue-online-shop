@@ -270,7 +270,8 @@ export default {
     },
     getPage(page = 1) {
       const vm = this;
-      // $("html, body").scrollTop($("#position").offset().top);
+      //點擊分頁跳回頁首
+      $("html, body").scrollTop($("#position").offset().top);
       vm.pagination.current_page = page;
     },
     openModal(isNew, item) {

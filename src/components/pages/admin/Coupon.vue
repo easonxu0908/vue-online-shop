@@ -200,7 +200,7 @@ export default {
     },
     getPage(page = 1) {
       const vm = this;
-      // $("html, body").scrollTop($("#position").offset().top);
+      $("html, body").scrollTop($("#position").offset().top);
       vm.pagination.current_page = page;
     },
     openModal(isNew, item) {
