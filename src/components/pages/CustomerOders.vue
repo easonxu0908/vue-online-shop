@@ -2,7 +2,7 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <topSilder></topSilder>
-    <!-- <BannerCarousel></BannerCarousel> -->
+
     <!-- 選購區 start-->
     <div class="container" id="position">
       <p class="text-center font-weight-bold h3 my-3">購物專區</p>
@@ -30,38 +30,53 @@
       </div>
       <div class="row mt-4">
         <div class="col-lg-2 col-md-3 mb-3">
-          <div class="sticky-top border rounded-lg" style="top:20px">
-            <div class="list-group list-group-flush">
+          <div class="sticky-top rounded-lg" style="top:20px">
+            <div class="list-group list-group">
               <a
                 class="list-group-item list-group-item-action active"
                 data-toggle="list"
                 href="#"
                 @click.prevent="changeTab('')"
-              >全部</a>
-              <a
-                class="list-group-item list-group-item-action"
-                data-toggle="list"
-                href="#"
-                @click.prevent="changeTab('鞋子')"
-              >鞋子</a>
-              <a
-                class="list-group-item list-group-item-action"
-                data-toggle="list"
-                href="#"
-                @click.prevent="changeTab('褲子')"
-              >褲子</a>
+              >
+                <img class="img-fluid" src="@/assets/image/file.svg" alt width="20">
+                <span class="ml-3">全部</span>
+              </a>
               <a
                 href="#"
                 class="list-group-item list-group-item-action"
                 data-toggle="list"
                 @click.prevent="changeTab('帽子')"
-              >帽子</a>
+              >
+                <img class="img-fluid" src="@/assets/image/hat.svg" alt width="20">
+                <span class="ml-3">帽子</span>
+              </a>
               <a
                 href="#"
                 class="list-group-item list-group-item-action"
                 data-toggle="list"
                 @click.prevent="changeTab('服飾')"
-              >服飾</a>
+              >
+                <img class="img-fluid" src="@/assets/image/tshirt.svg" alt width="20">
+                <span class="ml-3">服飾</span>
+              </a>
+              <a
+                class="list-group-item list-group-item-action"
+                data-toggle="list"
+                href="#"
+                @click.prevent="changeTab('褲子')"
+              >
+                <img class="img-fluid" src="@/assets/image/jeans.svg" alt width="20">
+                <span class="ml-3">褲子</span>
+              </a>
+              <a
+                class="list-group-item list-group-item-action"
+                data-toggle="list"
+                href="#"
+                @click.prevent="changeTab('鞋子')"
+              >
+                <img class="img-fluid" src="@/assets/image/shoe.svg" alt width="20">
+                <span class="ml-3">鞋子</span>
+              </a>
             </div>
           </div>
         </div>
@@ -107,7 +122,7 @@
 import $ from "jquery";
 import Pagination from "@/components/Pagination.vue";
 import CustomerOrdersCard from "@/components/pages/CustomerOrdersCard.vue";
-import BannerCarousel from "@/components/BannerCarousel";
+
 import prodSilder from "@/components/prodsilder";
 import topSilder from "@/components/topsilder";
 
@@ -135,7 +150,6 @@ export default {
   components: {
     Pagination,
     CustomerOrdersCard,
-    BannerCarousel,
     prodSilder,
     topSilder
   },
@@ -174,7 +188,7 @@ export default {
     changeTab(prodCategory) {
       const vm = this;
       vm.prodCategory = prodCategory;
-      console.log(vm.prodCategory);
+      // console.log(vm.prodCategory);
       vm.pagination.current_page = 1;
       vm.searchFilter = "";
       vm.searchResult = [];

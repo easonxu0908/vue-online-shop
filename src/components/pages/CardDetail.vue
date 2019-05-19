@@ -1,12 +1,12 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <div class="container">
+    <div class="container mt-4">
       <div class="row no-gutters" v-if="product.id">
         <div class="col-md-8 card">
           <img :src="product.imageUrl" class="img-fluid">
         </div>
-        <div class="col-md-4 pl-3">
+        <div class="col-md-4 mt-3 mt-md-0 pl-md-3">
           <div class="card">
             <div class="card-header h5">{{product.title}}</div>
             <div class="card-body">

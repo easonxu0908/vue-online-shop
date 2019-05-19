@@ -4,7 +4,7 @@
     <div class="productCard card border-0 rounded shadow-sm">
       <div
         class="card-img-top"
-        style="height: 300px; background-size: cover; background-repeat: no-repeat; background-position: center"
+        style="height: 250px; background-size: cover; background-repeat: no-repeat; background-position: center center"
         :style="{backgroundImage:`url(${item.imageUrl})`}"
       ></div>
       <div class="card-body">
@@ -43,7 +43,6 @@
 <script>
 import $ from "jquery";
 export default {
-  // props: ["item", "status"],
   props: {
     item: {
       type: Object,
@@ -61,14 +60,13 @@ export default {
   data() {
     return {
       isLoading: false
-      // product: {}
     };
   },
   methods: {
     addtoCart(id, qty = 1) {
       const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
       const vm = this;
-      // vm.status.loadingItem = id;
+
       const cart = {
         product_id: id,
         qty
