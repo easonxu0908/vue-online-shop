@@ -2,6 +2,7 @@ build/
 config/
 image/
 src/
+node_modules/
 
 .babelrc
 .editorconfig
@@ -10,4 +11,3 @@ src/
 package.json
 package-lock.json
 README.md
-node_modules
