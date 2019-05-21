@@ -1,2 +1,14 @@
 
 node_modules/
+build/
+config/
+image/
+src/
+static/
+.babelrc
+.editorconfig
+.postcssrc.js
+index.html
+package.json
+package-lock.json
+README.md
