@@ -1,8 +1,14 @@
+
+node_modules/
 build/
 config/
 image/
 src/
 node_modules/
+
+.babelrc
+.editorconfig
+.postcssrc.js
 
 .babelrc
 .editorconfig
