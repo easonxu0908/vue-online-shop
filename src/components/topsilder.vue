@@ -66,12 +66,12 @@ export default {
   background-size: cover;
 }
 .slide1 {
-  background-image: url("../assets/image/david-lezcano-225889-unsplash.jpg");
+  background-image: url("../assets/image/clark-street-mercantile-33931-unsplash.jpg");
 }
 .slide2 {
   background-image: url("../assets/image/clark-street-mercantile-33919-unsplash.jpg");
 }
 .slide3 {
-  background-image: url("../assets/image/clark-street-mercantile-33931-unsplash.jpg");
+  background-image: url("../assets/image/david-lezcano-225889-unsplash.jpg");
 }
 </style>
