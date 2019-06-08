@@ -102,6 +102,7 @@ export default {
   white-space: nowrap;
 }
 .productCard {
+  box-shadow: 0px 0px 5px black ;
   transition: all 0.5s;
 }
 .productCard:hover {
