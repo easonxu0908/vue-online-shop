@@ -2,7 +2,7 @@
 
 > A Vue.js project
 
-<a href=https://easonxu0908.github.io/vue-online-shop/>demo</a>
+<a href=https://easonxu0908.github.io/vue-online-shop/dist/#/>demo</a>
 ## Build Setup
 
 ``` bash
