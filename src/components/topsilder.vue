@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid mb-3 d-none d-md-block">
+  <div class="container-fluid swiper-container mb-3 d-none d-md-block">
     <swiper :options="swiperOption" class="topSwiper">
       <swiper-slide>
         <div class="slide slide1"></div>
@@ -26,7 +26,7 @@ export default {
       swiperOption: {
         loop: true,
         spaceBetween: 30,
-        effect: "fade",
+
         autoplay: {
           delay: 10000,
           disableOnInteraction: false
@@ -55,10 +55,7 @@ export default {
 
 <style lang="scss" scoped>
 .swiper-container {
-  height: 250px;
-  @media (min-width: 768px) {
-    height: 400px;
-  }
+  height: 300px;
 }
 .slide {
   height: 100%;
@@ -66,12 +63,12 @@ export default {
   background-size: cover;
 }
 .slide1 {
-  background-image: url("../assets/image/clark-street-mercantile-33931-unsplash.jpg");
+  background-image: url("../assets/image/clark-street-mercantile-33919-unsplash-ex.jpg");
 }
 .slide2 {
-  background-image: url("../assets/image/clark-street-mercantile-33919-unsplash.jpg");
+  background-image: url("../assets/image/clark-street-mercantile-33931-unsplash-ex.jpg");
 }
 .slide3 {
-  background-image: url("../assets/image/david-lezcano-225889-unsplash.jpg");
+  background-image: url("../assets/image/david-lezcano-225889-unsplash-ex.jpg");
 }
 </style>
