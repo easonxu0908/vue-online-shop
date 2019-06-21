@@ -28,7 +28,7 @@
                 <a class="nav-link bottomLine text-dark pb-0" href="#">首頁</a>
               </router-link>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item ">
               <router-link to="/customerOders">
                 <a class="nav-link bottomLine text-dark pb-0" href="#">商品區</a>
               </router-link>
