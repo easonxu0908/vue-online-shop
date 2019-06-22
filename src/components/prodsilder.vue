@@ -1,5 +1,6 @@
 <template>
   <div class="p-3">
+    <loading :active.sync="isLoading"></loading>
     <swiper :options="swiperOption" class="prodSwiper" v-if="filterData.length > 0">
       <swiper-slide v-for="item in filterData" :key="item.id">
         <CustomerOrdersCard :item="item" :status="status"/>
@@ -44,9 +45,9 @@ export default {
         spaceBetween: 10,
         speed: 600,
         grabCursor: true,
-        autoplay: {
-          delay: 5000
-        },
+        // autoplay: {
+        //   delay: 5000
+        // },
         pagination: {
           el: ".swiper-pagination",
           clickable: true
