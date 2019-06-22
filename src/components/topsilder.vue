@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid swiper-container mb-3 d-none d-md-block">
+  <div class="container swiper-container mb-3 d-none d-md-block">
     <swiper :options="swiperOption" class="topSwiper">
       <swiper-slide>
         <div class="slide slide1"></div>
