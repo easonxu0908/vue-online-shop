@@ -54,13 +54,16 @@
         </router-link>
       </nav>
     </div>
-
+    <a href="#" class="jq-backTop" id="backTop" title="回頂端">
+      <i class="fas fa-home fa-2x text-secondary"></i>
+    </a>
     <router-view></router-view>
     <Footer/>
   </div>
 </template>
 
 <script>
+import $ from "jquery";
 import Footer from "@/components/Footer";
 import CartIcon from "@/components/CartIcon";
 export default {
@@ -73,6 +76,35 @@ export default {
     CartIcon
   }
 };
+$(document).ready(function() {
+  //螢幕下滑超過100px顯示backTop  start
+  function scrollFunction() {
+    if (
+      document.body.scrollTop > 100 ||
+      document.documentElement.scrollTop > 100
+    ) {
+      document.getElementById("backTop").style.display = "block";
+    } else {
+      document.getElementById("backTop").style.display = "none";
+    }
+  }
+  window.onscroll = function() {
+    scrollFunction();
+  };
+  //螢幕下滑超過100px顯示backTop  end
+
+  // 滑動回頁首 start
+  $(".jq-backTop").click(function(event) {
+    event.preventDefault();
+    $("html,body").animate(
+      {
+        scrollTop: 0
+      },
+      500
+    );
+  });
+  // 滑動回頁首 end
+});
 </script>
 
 <style scoped>
@@ -90,5 +122,12 @@ a:hover {
 }
 .bottomLine:hover {
   border-bottom: 2px solid gray;
+}
+#backTop {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  display: none;
+  z-index: 10;
 }
 </style>
